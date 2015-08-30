@@ -14,3 +14,5 @@ $route->Add("GET", "/", function($e) use ($app){
 });
 
 $route->Run();
+
+exit;

@@ -9,12 +9,7 @@ $route->Add("POST", "/api/([A-z\_]{4,64})", function($e){
 	$app->Call(@$e[1]);
 });
 
-if ($route->subdomain) {
-	include 'application/route.sub.php';
-} else {
-	if (@$_SERVER['HTTPS'] != 'on') 	{
-		header("Location: https://" . HOST);
-		exit;
-	}
-	include 'application/route.local.php';
-}
+if ($route->subdomain) include 'application/route.sub.php';
+if (@$_SERVER['HTTPS'] == 'on') include 'application/route.local.php';
+	
+header("Location: https://" . HOST);

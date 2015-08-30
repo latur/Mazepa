@@ -82,3 +82,5 @@ $route->Add("GET", "/([A-z][A-z0-9]{2,256})", function($e){
 });
 
 $route->Run();
+
+exit;
