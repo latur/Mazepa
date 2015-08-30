@@ -627,6 +627,15 @@ var Media = (function(){
 	// !- Галерея
 	var Gallery = (function(){
 		var ID = false, albums = [];
+
+		var ShowQR = function(url) {
+			// Если будет сертификат ssl на все поддомены, здесь нужно изменить протокол!
+			var protocol = 'http://';
+			var url = protocol + url + '.' + host + '';
+			var qr  = '<img width="100%" src="' + (QRCode.generatePNG(url, {'modulesize' : 10})) + '">';
+			$('#right .gallery .qr').html( Templates('contentQR', {'qr' : qr, 'url' : url}) );
+		};
+
 		var GalleryTemplate = function(gid){
 			var gallery = FindGallery(gid);
 			if (!gallery) return false;
@@ -640,6 +649,7 @@ var Media = (function(){
 			var url = $('.subdomain input').css({ paddingRight : $('.subdomain .domain').width() + 7 });
 			url.val( url.val().replace('//', '').replace( $('.domain').html(), ''))
 			$('.settings select').val(gallery.privacy);
+			ShowQR(gallery.url);
 
 			// Внесение изменений в настройки альбома
 			$('.settings select').change(SaveGalleryData);
@@ -820,8 +830,8 @@ var Media = (function(){
 
 				var ShowQR = function(uname) {
 					data.url = location.protocol + '//' + host + '/' + (uname || data.username);
-					data.qr = '<img height="100%" src="' + (QRCode.generatePNG(data.url, {'modulesize' : 10})) + '">';
-					$('#right .pfl .qr').html( Templates('profileContentQR', data) );
+					data.qr = '<img width="100%" src="' + (QRCode.generatePNG(data.url, {'modulesize' : 10})) + '">';
+					$('#right .pfl .qr').html( Templates('contentQR', data) );
 				};
 				
 				ShowQR();

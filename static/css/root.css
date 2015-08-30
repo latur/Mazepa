@@ -197,6 +197,8 @@ html { background: #999; overflow: hidden }
 
 #media.HideInfo #right { right: 0; }
 #media.HideInfo #info { right: -291px; }
+.qr-bottom { width: 150px; float: left; }
+.url-bottom { float: left; font-size: 20px; padding: 60px 10px; text-align: left; overflow: hidden; text-overflow: ellipsis; }
 
 
 /* # Profile settings */
@@ -228,8 +230,6 @@ html { background: #999; overflow: hidden }
   .pfl .status i { position: absolute; left: 0; height: 6px; width: 0; background: rgba(0, 0, 0, 0.5); }
   .pfl #cover-upload { display: none; }
   .social .es p { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-  .pfl .qr-profile { width: 25%; height: 150px; float: left; }
-  .pfl .url-profile { width: 75%; float: right; font-size: 20px; padding: 60px; text-align: center; overflow: hidden; text-overflow: ellipsis; }
  /* ## Profile medialist */
  .pfl .m {}
  .pfl .m {}

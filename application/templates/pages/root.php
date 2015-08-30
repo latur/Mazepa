@@ -241,6 +241,8 @@
 			<div class="g-albums"></div>
 			<div class="g-albums-empty">В галерее нет ни одного альбома</div>
 		</div>
+		<div class="box qr">
+		</div>
 	</div>
 </div>
 <div class="template" id="profileContent">
@@ -282,9 +284,9 @@
 		</div>
 	</div>
 </div>
-<div class="template" id="profileContentQR">
-	<div class="qr-profile">{qr}</div>
-	<div class="url-profile"><a href="{url}">{url}</a></div>
+<div class="template" id="contentQR">
+	<div class="qr-bottom">{qr}</div>
+	<div class="url-bottom"><a href="{url}">{url}</a></div>
 </div>
 <div class="template" id="contextMenu">
 	<div class="background" id="cMenuBG"></div>

@@ -512,84 +512,9 @@ class Library extends Init {
 		return (@$test->fetchAll(PDO::FETCH_ASSOC)[0]['count'] == $count);
 	}
 
+	/*! --------------------------------------------------------------------- */
 
-
-
-
-
-
-
-	// ! ---- Старое
-
-
-	// Удаление фотографий из корзины
-	public function __clearTrashOLD(){
-		if(!is_array(@$_POST['ids'])) die("true");
-		$array = @$_POST['ids'];
-		foreach($array as $k => $v) $array[$k] = (int) $v;
-		$where = "where `owner` = '{$this->owner}' and `album` = '-1' and `id` in (" . implode(', ', $array) . " )";
-		$files = $this->db->exec("select * from `mazepa_media` $where");
-		$list  = '0';
-		foreach($files as $file){
-			$list .= ',' . $file['id'];
-			exec('echo "'.$file['src'].'" >> /home/mathilde/www/hard.mazepa.us/removed');
-		}
-		$this->db->exec("delete from `mazepa_media` where `id` in ($list)");
-		$this->db->exec("delete from `mazepa_colors` where `media` in ($list)");
-		return array('files' => $files);
-	}
-	// Главная : получить последние фотки галереи
-	public function __eventsGpreview(){
-		$gid = (int) @$_POST['gid'];
-		$images = $this->db->exec("select `mazepa_media`.* from `mazepa_media` 
-			left join `mazepa_alb_gal` on `mazepa_media`.`album` = `mazepa_alb_gal`.`aid` 
-			where `mazepa_alb_gal`.`gid` = '{$gid}' and `mazepa_media`.`owner` = '{$this->owner}' order by `date` desc limit 50");
-		return array('images' => $images);
-	}
-	// Удалить пост! 
-	public function __eventRemove(){
-		$id = (int) @$_POST['id'];
-		$this->db->exec("delete from `mazepa_events` where `id` = '{$id}' and `owner` = '{$this->owner}' limit 1");
-		return [];
-	}
-	// Новый пост на главной!
-	public function __postCreate(){
-		// Список картиночек
-		$picts = @$_POST['picts'];
-		if(!is_array($picts)) return [];
-		foreach($picts as $k => $v) $picts[$k] = (int) $v['id'];
-		$info = array(
-			':id' => NULL,
-			':owner' => $this->owner,
-			':text' => text::clear(@$_POST['text']),
-			':alb' => (int) @$_POST['aid'],
-			':gal' => (int) @$_POST['gid'],
-			':media' => implode(',', $picts)
-		);
-		// Если альбом/галерея приватны, открываем доступ
-		// ПРОВЕРКА
-		if($info[':alb'] > 0) $this->db->exec("update `mazepa_albums` set `privacy` = 2 where `id` = '{$info[':alb']}' and `owner` = '{$this->owner}' and `privacy` < 2");
-		if($info[':gal'] > 0) $this->db->exec("update `mazepa_gallery` set `privacy` = 2 where `id` = '{$info[':gal']}' and `owner` = '{$this->owner}' and `privacy` < 2");
-		// Добавление новости
-		$this->db->exec("insert into `mazepa_events` values(".implode(", ", array_keys($info)).")", $info);
-		return array('ok' => true);
-	}
-	
-	// Получение галереи
-	public function __gallery(){
-		return $this->gallery((int) @$_POST['id']);
-	}
-	// Проверка существования [false,true,data] = [Некорректно, Уникально, Существует]
-	public function __existGalleryUrl($url){
-		$url = $this->me->is_name(htmlspecialchars($url));
-		if(!$url) return false;
-		$gallery = $this->db->exec("select * from `mazepa_gallery` where `url` = '{$url}' limit 1");
-		return (count($gallery) == 0) ? true : $gallery[0];
-	}
-	// Получить медиатеку
-	public function __listfull(){
-		return $this->listfull();
-	}
+	// Старое
 	// Подарить инвайт
 	public function __Invite(){
 		$id = (int) $_POST['id'];
