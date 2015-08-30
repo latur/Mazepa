@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 	<link rel="shortcut icon" href="/favicon.ico">
 	<link href="/cache/@style.css" rel="stylesheet" type="text/css">
-	<script src="/static/js/lib/jquery.min.js"></script>
+	<script src="/static/js/lib/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 	<div id="main" class="">
@@ -33,8 +33,7 @@
 		</div>
 	</div>
 	<? } ?>
-	<script>var host = '<?=HOST?>', hard = '<?=MEDIA?>';</script>
-	<script>var token = '<?=@Ego::AddToken()?>', level = <?=(int)$this->user['level']?>;</script>
+	<script>var host = '<?=HOST?>', hard = '<?=MEDIA?>', token = '<?=@Ego::AddToken()?>', level = <?=(int)$this->user['level']?>;</script>
 	<script src="/<?=$contentjs?>"></script>
 </body>
 </html>
