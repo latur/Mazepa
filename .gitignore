@@ -1,0 +1,4 @@
+exe/*
+cache/*.jpg
+log/*.log
+application/config.php

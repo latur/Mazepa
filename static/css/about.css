@@ -1,0 +1,167 @@
+.about .blackMsg { box-shadow: 0 0 50px #000; z-index: 99999; }
+.about .blackArea { z-index: 9999; }
+
+.slide {}
+.slide { position: relative; background: #111; padding: 50px 15px 0 15px; text-align: center; background-size: cover; font-size: 20px; color: #eee; text-shadow: 1px 1px 2px rgba(0,0,0,1.2); min-height: 800px; }
+.slide p { font-size: 16px; padding: 0 20px; color: #ddd }
+.slide h2 { padding: 50px 0 0 0; }
+.slide img { max-width: 90%; }
+
+.slide .next {position: absolute; width: 100%; margin: 0 -15px; bottom: 0; display: none; z-index: 30 }
+.slide .next a { background: #FE4D4D; color: #000; margin: 20px 5px; text-shadow: none; box-shadow: 0 0 20px #000; }
+.slide .next a.down { background: #4285f4 }
+.fsvs .slide .next { display: block }
+
+.slide.s1 {}
+.slide.s1 { background-image: url('/static/img/s1-bg.jpg'); }
+.slide.s1 h2 { padding: 300px 0 0 0; position: relative; z-index: 20; }
+.slide.s1 p { font-size: 22px; padding: 0 40px; color: #eee; position: relative; z-index: 20; }
+.slide.s4 {}
+.slide.s4 { background-image: url('/static/img/s3-bg.jpg'); }
+ .slide .features { position: absolute;top:20%;bottom:0%;left:15%;right:15%; }
+ .slide .features .f { width: 50%; float: left; height: 40%; padding: 10px; }
+ .slide .features span.fi { font-size: 13px; background: rgba(255, 255, 255, 0.17); border-radius: 2px; padding: 1px 5px; text-shadow: 0 -1px 0 rgba(0,0,0,0.2); }
+ .slide .features .icon { font-size: 60px; }
+ .slide .features p { text-shadow: 0 0 15px #000, 0 0 10px #000, 0 0 15px #000; }
+.slide.s3 {}
+ .slide.s3 #s3img { margin: 0 -15px; background: url('/static/img/s3-img.jpg') no-repeat center center; height: 629px;  }
+
+a.close.autore { margin: 15px 0 0 0; background: #ddd; }
+.blackMsg .l { text-align: left; padding: 8px 30px; }
+
+html.fsvs {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+html.fsvs #fsvs-body {
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+}
+
+html.fsvs #fsvs-body > * {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+}
+
+html.fsvs #fsvs-pagination {
+  margin: 0;
+  padding: 8px 4px;
+  position: fixed;
+  height: auto;
+  right: -100px;
+  top: 50%;
+  z-index: 999;
+  width: 32px;
+}
+
+html.fsvs #fsvs-pagination li {
+  list-style: none;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  margin: 0 0 2px 0;
+  cursor: pointer;
+}
+
+html.fsvs #fsvs-pagination li > span {
+  border-radius: 100%;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  border: 1px solid white;
+  display: block;
+}
+
+html.fsvs #fsvs-pagination li > span > span {
+  border-radius: 100%;
+  width: 12px;
+  height: 12px;
+  line-height: 12px;
+  border: 1px solid white;
+  display: block;
+  margin: 4px;
+}
+
+html.fsvs #fsvs-pagination li.active > span {
+  border: 1px dashed white;
+}
+
+html.fsvs #fsvs-pagination li.active > span > span {
+  background: white;
+}
+
+html.fsvs #fsvs-pagination li:last-child {
+  margin: 0;
+}
+
+
+
+/* liska image */
+.liska {
+	position: absolute;
+	top:    -20px;
+	left:   -20px;
+	right:  -20px;
+	bottom: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 10;
+}
+
+.liska > div {
+	background: url('/static/img/s1-bg.jpg');
+	background-size: cover;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.liska__back--static, .liska__front {
+	-webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+	transition: transform 0.5s, opacity 0.5s;
+	-webkit-transform-origin: 50% 60px;
+	transform-origin: 50% 60px;
+	-webkit-transition-timing-function: cubic-bezier(0.6,0,0.4,1);
+	transition-timing-function: cubic-bezier(0.6,0,0.4,1);
+}
+
+.liska__back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.liska__back--mover {
+	opacity: 0.7;
+	-webkit-transition: -webkit-transform 0.4s, opacity 0s 0.5s;
+	transition: transform 0.4s, opacity 0s 0.5s;
+}
+
+.liska__front {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin: 0 0 0 -391px;
+	width: 782px;
+	height: 782px;
+	border-radius: 50%;
+	opacity: 0;
+}
+
+
+
+

@@ -1,0 +1,222 @@
+* { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none; }
+* { padding: 0; margin: 0; outline: none }
+* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+input, textarea, #meta * { -webkit-touch-callout:default; -webkit-user-select:text; -moz-user-select:text; -ms-user-select:text; user-select:text; }
+
+html { height: 100%; background: #f4f4f4;  }
+body { font: 13px 'Segoe UI', 'DejaVu Sans', Helvetica, 'Trebuchet MS', Arial, sans-serif; }
+
+h2, h3, h4, p { font-weight: 100 }
+a { color: #333 ; cursor: pointer }
+a:hover { color: #C52D2D }
+a:active { color: #BE020A }
+hr { margin: 15px 0 10px 0; background: rgba(0, 0, 0, 0.1); height: 1px; border: none }
+
+/* Общие элементы */
+
+.inset { z-index: 10; position: relative; }
+.inset:after { content: ''; top:0;left:0;right:0;bottom:0; box-shadow: inset 0 0 5px rgba(0,0,0,0.2); position: absolute; z-index: 15; } 
+
+.animate { 
+	-webkit-transition: all 0.35s ease-out; -moz-transition-: all 0.35s ease-out; -o-transition: all 0.35s ease-out; transition: all 0.35s ease-out; }
+.animatelond { 
+	-webkit-transition: all 2.35s ease-out; -moz-transition-: all 2.35s ease-out; -o-transition: all 2.35s ease-out; transition: all 2.35s ease-out; }
+.gradient {
+	background: rgb(255,255,255);
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(252,252,252,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(252,252,252,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(252,252,252,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(252,252,252,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(252,252,252,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(252,252,252,1) 100%); /* W3C */ }
+
+.form-c { 
+	width: 100%; -webkit-appearance: none; padding: 5px 8px; font-size: 13px; line-height: 1.4; background-color: #fff; border: 1px solid #d9d9d9; border-top-color: silver; border-radius: 1px; -webkit-box-shadow: none; box-shadow: none; -webkit-transition: none; -o-transition: none; transition: none; }
+.form-c:hover { 
+	border: 1px solid #b9b9b9; border-top-color: #a0a0a0; -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1); box-shadow: inset 0 1px 2px rgba(0,0,0,.1); }
+.form-c:active, .form-c:focus { 
+	border-color: #BE020A; border-color: #4d90fe; box-shadow: inset 0 1px 2px rgba(0,0,0,.3); }
+textarea { 
+	resize: vertical }
+
+.template { display: none }
+
+/* Панель ссылок */
+
+#p { }
+#p { position: fixed; top:0; left:0; right:0; z-index: 50; height: 49px; border-bottom: 1px solid #E6E6E6; box-shadow: 0 1px 5px rgba(0,0,0,0.05); overflow: hidden; }
+#p .pane { text-decoration: none; text-align: center; line-height: 49px; height: 50px; padding: 15px 10px; }
+#p .pane:hover { color: #000; text-shadow: 0 1px 1px #ccc; }
+#p .pane:before { text-decoration: none !important }
+#p .pane.current { color: #BE020A; cursor: default; text-shadow: 0 1px 2px #ddd }
+#p .logo .icon { float: left; font-size: 22px; margin-left: 18px; }
+#p.media .right { position: absolute; top: 0; right: 0; padding: 0 10px; }
+#p.media a.logo .icon { float: right; margin: 0 }
+#p.media .bookmark { float: left; font-size: 22px; padding: 0px 10px; }
+#p.media .bookmark.saved {   color: #E00000; }
+#p.media .cascade a.pane:last-child { color: #BE020A; cursor: default; text-shadow: 0 1px 2px #ddd }
+
+.media .profile { text-decoration: none; text-align: center; line-height: 49px; height: 50px; font-weight: 900; text-shadow: 0 1px 2px #ddd; }
+.media .profile { position: absolute; left: 0; top: 0; }
+.media .profile .avatar { width: 40px; height: 40px; border-radius: 20px; position: relative; overflow: hidden; margin: 5px 8px; display: block; }
+.media .profile .avatar:after { border-radius: 50%; }
+.media .profile .avatar img { width: 100%; position: relative; z-index: 10 }  
+.media .name { padding-left: 50px; }
+.media .profile:hover { text-shadow: 0 1px 3px #a4a4a4; color: #000; cursor: pointer }
+
+/* Панель ссылок: мобильная версия */
+
+#p.mini {}
+#p.mini .cascade > span { display: none }
+#p.mini .logo { display: none }
+#p.mini .pgtitle, #p.mini .pmtitle { display: none }
+#p.mini .name { padding: 0 50px 0 50px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 100%; position: absolute; top: 0; text-align: left; }
+.place a { text-decoration: none; margin-bottom: 0px; }
+.place h2, .place h3 { padding: 8px 8px 0 8px; }
+
+/* Диалоговое окно */
+
+.box { box-shadow: rgba(0,0,0,0.07) 0 2px 7px; border-radius: 3px; background: #FFF; }
+.black { z-index: 330; position: fixed; top:0;left:0;right:0;bottom:0; display: none; background: rgba(0,0,0,0.8); }
+
+.msg  { z-index: 340; position: fixed; opacity: 0; padding: 10px 15px 20px 15px; width: 400px; margin-left: -200px; left: 50%; top:20%; text-align: center }
+.msg h2 { margin-bottom: 4px; }
+.msg h3 { margin: 5px 0 3px 0; line-height: 25px; }
+.msg p { margin: 5px 0 }
+.msg .ctrl { margin-top: 15px }
+.msg .ctrl a { margin: 0 5px; float: right; }
+.msg .ctrl a.cancel { float: left }
+.msg .ctrl a.hide { display: none; }
+
+/* Страница */
+
+.page { margin-top: 49px }
+.e { padding: 6px; overflow: hidden; }
+
+#main { background: #fff; overflow: hidden; }
+#footer { padding: 12px 15px; font-size: 11px; color: #777;	}
+#footer span:not(:first-child):before { content: '•'; margin: 0 5px; }
+
+#buttons h4, #buttons h5 { margin: 7px 0; font-weight: 200; }
+#buttons a { margin: 0 3px; }
+@media (max-width: 460px)  {
+ #buttons .ss a { display: block; margin: 10px }
+}
+
+
+/* Главная страница */
+
+.main { padding: 20px; margin-bottom: 150px; overflow: hidden; }
+.boxed { overflow: hidden; border-radius: 4px; box-shadow: 0 2px 15px rgba(0,0,0,0.15); margin: 20px 0; }
+.boxed:hover { box-shadow: 0 2px 17px rgba(0,0,0,0.25); }
+
+.switch { line-height: 18px; background: #333; color: #eee; padding: 10px 20px; display: none; }
+.switch a { color: #eee; font-size: 1em; text-decoration: none; margin-right: 15px }
+.switch a.current { color: rgba(255, 5, 15, 0.7); cursor: default; }
+
+ /* Лента альбомов */
+ .feed { float: left; margin-right: 20px; max-width: 360px; }
+  .feed .cover { overflow: hidden }
+  .feed .cover img { width: 100%; float: left }
+  .feed .data { padding: 20px; }
+   .feed .data h3 { margin: 5px 0; }
+   .feed .data .owner { display: block; text-decoration: none }
+   .feed .data .owner img { width: 30px; height: 30px; border-radius: 3px; line-height: 30px; float: left; margin-right: 10px; }
+   .feed .data .owner span { line-height: 30px; }
+   .feed .data .points { overflow: hidden; margin: 10px 0 0 0; }
+   .feed .data .points a { width: 15px; height: 15px; margin: 1px 1px 0 0; float: left; border: 1px solid rgba(0,0,0,0.1); }
+   .feed .data .points a:hover { border: 2px solid rgba(0,0,0,0.2); }
+
+ /* Закладки пользователя */
+ .swithed { padding-left: 380px; }
+ .alist { width: 100%; margin-bottom: 20px; }
+  .alist .list { background: #eee; margin: 0 }
+  .bm .album { padding: 10px 10px 10px 35px; position: relative; margin-top: 1px; background: #fff; }
+  .bm:first-child .album { margin: 0; }
+  .bm .album > span { font-size: 1.2em; color: #777; position: absolute; left: 12px; top:10px; line-height: 20px; text-align: center; width: 15px; } 
+  .bm h4 a { line-height: 20px; font-size: 1.2em; text-decoration: none;  }
+  .bm a { text-decoration: none }
+  .bm .delete { position: absolute; padding: 12px; right: 0; top:0; opacity: 0 }
+  .bm:hover .delete { opacity: 1 }
+ .alist .area { padding: 20px 0 }
+ .alist .area > p { padding-bottom: 8px; }
+ .alist .area p > .icon { font-size: 1.1em; line-height: 1em; padding: 0 5px; border: 1px solid #eee; border-radius: 3px  }
+
+@media (max-width: 600px)  {
+ .points { display: none; }
+ .bm .delete { opacity: 1 }
+ .switch { display: block }
+ .main { width: 200%; padding: 0; }
+ .feed, .swithed { margin: 0; float: left; width: 50%; max-width: none; padding: 20px; }
+ .swithed { float: right; }
+ .main.showbm { margin-left: -100%; }
+ .main.showbm .feed, .swithed { display: none }
+ .main.showbm .swithed { display: block }
+}
+
+/* Галерея */
+
+/* Персональная страница */
+
+.u {}
+ /* Обложка, аватарка */
+ .u .cover { width: 100%; background: #2C2C2C; text-align: center; overflow: hidden; position: relative; min-height: 280px; }
+  .u .cover img { width: 100%; float: left }
+ .u .name { position: absolute; z-index: 15; top: 50%; margin-top: -95px; width: 100%; }
+  .u .name .pic { background-size: cover; width: 190px; height: 190px; border-radius: 50%; overflow: hidden; margin-left: 50px; float: left; box-shadow: 0 1px 10px rgba(0,0,0,0.3); background-color: #555 }
+  .u .name h1 { text-align: left; color: #ECECEC; text-shadow: 0 1px 3px #000; padding: 77px 20px 77px 270px; line-height: 36px; font-size: 36px; }
+ .u h2 { margin: 6px 3px; }
+@media (max-width: 850px){
+ .u .cover { min-height: 250px; }
+ .u .cover img { left: -35%; width: 170%; }
+ .u .name .pic { width: 100px; height: 100px; margin: auto; float: none }
+ .u .name h1 { display: block; text-align: center; padding: 20px }
+}
+@media (max-width: 400px){
+ .u .cover { min-height: 150px; }
+ .u .name { margin-top: -55px; }
+ .u .name .pic { width: 70px; height: 70px; }
+ .u .name h1 { display: block; text-align: center; padding: 10px; font-size: 24px; line-height: 24px; }
+}
+
+
+/* Список альбомов */
+
+.e .alb { width: 50%; float: left; padding: 13px 5px; overflow: hidden ; padding-top: 30%; position: relative; color: #EEE; text-shadow: 0 1px 2px #000; }
+.e .alb h3 { position: absolute; bottom:3px; z-index: 25; left:3px; right:3px; padding: 13px; background: rgba(0,0,0,0.2); }
+.e .alb:hover h3 { background: rgba(0,0,0,0.7); }
+.e .alb p { font-size: 70%; }
+.e .alb .img { top:3px;left:3px;right:3px;bottom:3px; overflow: hidden; background: #222; position: absolute; }
+.e .alb .img img { width: 100%; transform: scale(1); float: left }
+.e .alb .img:hover img { transform: scale(1.2); }
+.e .alb { width: 25%; padding-top: 13%; }
+@media (max-width: 1900px){
+ .e .alb { width: 33.333%; padding-top: 18%; }
+}
+@media (max-width: 1500px){
+ .e .alb { width: 50%; padding-top: 27%; }
+}
+@media (max-width: 850px){
+ .e .alb { width: 100%; padding-top: 60%; }
+}
+
+/* Список фотографий */
+
+.desc { margin: 0; background: #fff; padding: 8px 8px 2px 8px; font-weight: 100 }
+.imgs.e a { width: 180px; display: block; float: left; margin: 3px; border-radius: 3px; height: 180px; background: #EEE; }
+.imgs.e a img { float: left; width: 100%; border-radius: 3px; position: relative; z-index: 10; display: none }
+.imgs.e a.inset:after { border-radius: 3px; }
+
+/* Страница приглашения */
+#in {}
+#in { padding: 20px; max-width: 490px; }
+ #in #drop { padding: 20px 10px; margin: 10px 0; border: 2px dashed #848484; text-align: center; color:#7f858a; border-radius: 5px; }
+ #in #drop input { display:none; }
+ #in #drop p { text-align: center; }
+ #in #drop .select { margin: 10px; }
+ #in h3 { margin-top: 10px; }
+ #in p { text-align: left; padding: 2px 0; }
+ #in .guest-img{width:50px;height:50px;border-radius:3px;overflow:hidden;float:left;background-size:100%;margin-right:15px;background-color: #333;}
+ #in .myname{margin:auto;line-height:50px}
+
