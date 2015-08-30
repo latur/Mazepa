@@ -323,9 +323,7 @@ class Library extends Init {
 		// Вставка # удалние альбома
 		$this->db->query("delete from `mazepa_alb_gal` where `aid` = '{$aid}' and `gid` = '{$gid}' limit 1");
 		if(!$rem) $this->db->query("insert into `mazepa_alb_gal` (`aid`, `gid`) values ('$aid', '$gid')");
-		return [ 
-			'covers' => $this->AlbumCovers($aid) 
-		];
+		return [ 'covers' => $this->AlbumCovers($aid) ];
 	}
 
 	/**
@@ -425,19 +423,50 @@ class Library extends Init {
 			set `name` = ?, `username` = ?, `text` = ? 
 			where `id` = '{$this->user['id']}'");
 		$e->execute($data);
-		return [
-			'success' => true
-		];
+		return [ 'success' => true ];
+	}
+
+	/**
+	 * Добавить альбом на главную страницу
+	 */
+	public function __ProfileAddAlbums(){
+		$aid = (int) $_POST['aid'];
+		$cnt = (int) $_POST['cnt'];
+		$this->db->query("update `mazepa_albums` set `privacy` = '3', `order` = '{$cnt}' where `owner` = '{$this->user['id']}' and `id` = '{$aid}'");
+		return [ 'covers' => $this->AlbumCovers($aid) ];
+	}
+
+	/**
+	 * Альбомы на главной странице — порядок
+	 */
+	public function __ProfileAlbumsOrder(){
+		$ordered = @$_POST['ordered'];
+		foreach($ordered as $k => $v) $ordered[$k] = (int) $v;
+		if(count($ordered) == 0) return [];
+		// Обновление информации
+		$this->db->beginTransaction();
+		foreach($ordered as $k => $v){
+			$e = $this->db->prepare("update `mazepa_albums` set `order` = ? where `id` = ? and `owner` = '{$this->user['id']}'");
+			$e->execute([$k, $v]);
+		}
+		$this->db->commit();
+		return [];
 	}
 
 	/**
 	 * Получение информации о пользователе 
 	 */
 	public function __Profile(){
+		// Общее
 		$user = $this->db->query("select * from `mazepa_userinfo` where `mazepa_userinfo`.`id` = '{$this->user['id']}' limit 1");
 		$userInfo = $user->fetch(PDO::FETCH_ASSOC);
+		// Социалки привязанные
 		$social = $this->db->query("select * from `mazepa_social` where `owner` = '{$this->user['id']}' order by `date` desc");
 		$userInfo['social'] = $social->fetchAll(PDO::FETCH_ASSOC);
+		// Публичные альбомы мои
+		$albums = $this->db->query("select `id` from `mazepa_albums` where `owner` = '{$this->user['id']}' and `privacy` = '3' order by `order` asc");
+		$userInfo['albums'] = array_map(function($e){ return (int) $e['id']; }, $albums->fetchAll(PDO::FETCH_ASSOC));
+		$userInfo['covers'] = $this->AlbumCovers($userInfo['albums']);
 		return $userInfo;
 	}
 

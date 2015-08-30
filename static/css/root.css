@@ -90,8 +90,8 @@ html { background: #999; overflow: hidden }
    #list .e.sel {   background: rgba(145, 200, 255, 0.20); border: 1px solid rgba(215, 220, 255, 1); margin: -1px -1px 0 -1px; }
    #list .e.sel .settings { height: 29px; opacity: 1; padding: 4px 0; overflow: visible }
    #list .e.sel .border { opacity: 1; width: 4px; }
-   #list .e.exist { opacity: 0.5; }
-   #list .e.album h4 .icon, #list .e.album .url { display: none }
+   #list .e.exist, #list .e.exist p { color: #aaa !important;  }
+   #list .e.album h4 .icon, #list .e.album .url, .albumDrag .a-helper .icon { display: none }
    #list .e.image-to-album { background: rgba(145, 200, 255, 0.60); }
    #list .url { padding: 0 5px; background: #35ABFF; color: #fff; border: 1px solid rgba(0,0,0,.2); border-radius: 2px; text-shadow: 0 1px 1px rgba(0,0,0,.4); font-size: 0.8em; }
 /* [END] Left panel */
@@ -248,16 +248,16 @@ html { background: #999; overflow: hidden }
   #right .gallery .g-albums .drag-helper {  padding: 100px 0;  }
   #right .gallery .helper { float: right; width: 50%; padding: 45px 30px; text-align: center; color: #777; position: relative;  }
   #right .gallery .delgal { margin: 10px; background: #F4F4F4; }
-  #right .gallery .a-cover { width: 49.5%; padding-top: 30%; float: left; overflow: hidden ; position: relative; color: #EEE; text-shadow: 0 1px 2px rgba(0,0,0,0.5); margin-left: 1%; margin-top: 1%;  }
-  #right .gallery .a-cover:nth-child(odd) { margin-left: 0; } 
-  #right .gallery .a-cover * { position: absolute; }
-  #right .gallery .a-cover h3 { position: absolute; bottom:0; z-index: 10; left: 0; right: 0; padding: 10px; background: rgba(0,0,0,0.3); }
-  #right .gallery .a-cover .img { top:0;left:0;right:0;bottom:0; overflow: hidden; }
-  #right .gallery .a-cover .img img { width: 100%; }
-  #right .gallery .a-cover .del { position: absolute; z-index: 10; top: 3px; right: 3px; opacity: 0; background: #222; }
-  #right .gallery .a-cover:hover .del { opacity: 1; }
-  .a-helper { position: fixed; z-index: 80; background: #F0F7FA; width: 350px; padding: 7px 15px; border-left: 4px solid #0056B4 } 
+
+  #right .a-cover { width: 50%; padding-top: 30%; float: left; overflow: hidden ; position: relative; color: #EEE; text-shadow: 0 1px 2px rgba(0,0,0,0.5);  }
+  #right .a-cover * { position: absolute; }
+  #right .a-cover h3 { position: absolute; bottom:0; z-index: 10; left: 0; right: 0; padding: 10px; background: rgba(0,0,0,0.3); }
+  #right .a-cover .img { top:0;left:0;right:0;bottom:0; overflow: hidden; }
+  #right .a-cover .img img { width: 100%; }
+  #right .a-cover .del { position: absolute; z-index: 10; top: 3px; right: 3px; opacity: 0; background: #222; }
+  #right .a-cover:hover .del { opacity: 1; }
   /* */
+  .a-helper { position: fixed; z-index: 80; background: #F0F7FA; width: 350px; padding: 7px 15px; border-left: 4px solid #0056B4 } 
   .g-albums-dp { position: absolute; bottom: 0; top: 0; right: 0; left: 0; z-index: -5; background: rgba(165, 187, 255, 0.05); margin: 10px; border-radius: 5px; border: 2px dashed rgba(165, 187, 255, 0.2); }
   .g-albums-empty { text-align: center; padding: 50px 0; }
   .albumDrag .g-albums-dp { z-index: 50 !important; }
@@ -265,9 +265,7 @@ html { background: #999; overflow: hidden }
   /* */
   #right .gallery .a-cover.ui-sortable-helper { opacity: 0.5 } 
   @media (min-width: 1300px) { 
-    #right .gallery .a-cover { width: 33%; padding-top: 20%; margin-left: 0.5%; margin-top: 0.5%;  }
-    #right .gallery .a-cover:nth-child(odd) { margin-left: 0.5%; } 
-    #right .gallery .a-cover:nth-child(3n-2) { margin-left: 0; } 
+    #right .a-cover { width: 33.3333%; padding-top: 20%; }
   }
 /* [END] Gallery settings */
 

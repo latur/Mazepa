@@ -142,7 +142,7 @@
 	<div class="a-cover" data-id="{id}">
 		<div class="img" style="background:#{color}">{img}</div>
 		<h3>{title}</h3>
-		<a class="del waves-effect waves-button waves-float mini">Убрать из галереи</a>
+		<a class="del waves-effect waves-button waves-float mini">убрать</a>
 	</div>
 </div>
 <div class="template" id="albumContent">
@@ -246,6 +246,7 @@
 <div class="template" id="profileContent">
 	<div class="pfl frame">
 		<div class="box">
+			<div class="g-albums-dp"></div>
 			<form id="cover-upload" method="post" action="/upload" enctype="multipart/form-data"><input type="file" name="cover" multiple /></form>
 			<div class="c">
 				{cover}
@@ -275,9 +276,7 @@
 		    		</div>
 				</div>
 			</div>
-			<div class="m">
-				<p>В недалёком будущем будет возможность прямо сюда прямо из панельки слева перетащить альбомы и галереи для страницы персональной. А пока нет</p>
-			</div>
+			<div class="m"></div>
 		</div>
 	</div>
 </div>

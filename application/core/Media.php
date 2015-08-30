@@ -218,7 +218,7 @@ class Media extends Init {
 	 */ 
 	public function ProfileAlbums($id = false){
 		$q = $this->db->query("select * from `mazepa_albums` 
-			where `owner` = '{$id}' and `privacy` >= 3 order by `id` desc");
+			where `owner` = '{$id}' and `privacy` >= 3 order by `order` asc");
 		$albums = $q->fetchAll(PDO::FETCH_ASSOC);
 		if(!is_array($albums) || count($albums) == 0) return [];
 

@@ -4,8 +4,6 @@ var Media = (function(){
 	var albums = [], gallery = [];
 	// Статус клавиши Shift
 	var shiftKey = false;
-	// Мышь:
-	var mouse = [0,0];
 
 	// !- Альбом : Поиск по id
 	var FindAlbum = function(aid){
@@ -630,16 +628,19 @@ var Media = (function(){
 			$('#media').addClass('HideInfo');
 			$('.e').removeClass('exist');
 			$('.e.ui-draggable').draggable("enable");
+
 			// Красивость субдомена
 			$('.domain').html('.' + host);
 			var url = $('.subdomain input').css({ paddingRight : $('.subdomain .domain').width() + 7 });
 			url.val( url.val().replace('//', '').replace( $('.domain').html(), ''))
 			$('.settings select').val(gallery.privacy);
+
 			// Внесение изменений в настройки альбома
 			$('.settings select').change(SaveGalleryData);
 			$('.settings input, .settings textarea').keyup(function(){
 				Stack(SaveGalleryData, 1000);
 			});
+
 			// Удаление галереи
 			$('.gallery .delgal').click(function(){
 				$('.gallery').animate({ marginTop: '100%', opacity : 0 })
@@ -690,13 +691,15 @@ var Media = (function(){
 			
 			// События
 			$('.g-albums').sortable({ 
+				helper : 'clone',
+				scroll : true,
 				cancel: ".drag-helper",
 				stop : function(){
 					var ordered = {};
 					$('.g-albums .a-cover').each(function(i, e){ ordered[i] = $(this).data('id'); });
 					Library('AlbumsInGalleryOrder', { gid : ID, ordered : ordered });
 				}
-			});
+			}).disableSelection();
 
 			$('#right .g-albums-dp').droppable({
 				hoverClass : 'hover',
@@ -778,88 +781,150 @@ var Media = (function(){
 	
 	// !- Настройки профиля
 	var Profile = (function(){
-		var SaveProfileData = function(){
-			var data = [];
-			$('.pfl input, .pfl textarea').each(function(){
-				data.push($(this).val());
-			});
-			Library('ProfileInfo', {data : data});
-		};
-		var DisplayProfile = function(data){
-			// Внешние профили
-			data.insocial = '';
-			var sUrl = {
-				'vk' : function(e){ return 'https://vk.com/id' + e; },
-				'fb' : function(e){ return 'https://facebook.com/profile.php?id=' + e; },
-				'gp' : function(e){ return 'https://plus.google.com/u/0/' + e; }
-			};
-			for (var p in data.social){
-				var s = data.social[p].sid;
-				data.social[p].url = sUrl[s.substr(0, 2)](s.substr(2))
-				data.social[p].picture = data.social[p].picture ? '<img src="'+data.social[p].picture+'">' : '';
-				data.insocial += Templates('eSocial', data.social[p]);
-			}
-			if (data.cover) data.cover = '<img width="100%" src="' + hard + data.cover + 'cover_large.jpg">';
-			else { data.cover = ''; }
-			// Вставка шаблона
-			$('#right').html( Templates('profileContent', data) );
-			$('#media').addClass('HideInfo');
-			$('.e').removeClass('exist');
-			$('.e.ui-draggable').draggable("disable");
-			// Красивость домена
-			$('.pfl .url span').html(location.origin + '/');
-			var url = $('.pfl .url input').css({ paddingLeft : $('.pfl .url span').width() + 8 });
-			// Привязка соц-сетей
-			$('.pfl .ss a').click(OAuth);
-			// Загрузка  обложки
-			$('.pfl .c').click(function(){
-			    $('#cover-upload').find('input').click();
-			});
-			var ul = $('.status'), info = false;
-			$('#cover-upload').fileupload({
-				dropZone: $('.pfl .c'),
-			    add: function (e, data) {
-			        var tpl = $('<div/>');
-			        tpl.find('p').text(data.files[0].name).append('<i>' + data.files[0].size + '</i>');
-			        data.context = tpl.appendTo(ul);
-			        tpl.find('input').knob();
-			        tpl.find('span').click(function(){
-			            if(tpl.hasClass('working')) jqXHR.abort();
-			            tpl.fadeOut(tpl.remove);
-			        });
-			        // Automatically upload the file once it is added to the queue
-			        var jqXHR = data.submit();
-			    },
-				progress: function(e, data){ 
-					var progress = parseInt(data.loaded / data.total * 100, 10);
-					$('.pfl .status i').css({ width: progress + '%' });
-					info = data; 
-				},
-			    stop : function(e){
-			        var src = hard + info.result + 'cover_large.jpg';
-					$('.pfl .c img').attr('src', src + '?' + Math.random());
-					$('.pfl .status i').css({ width: 0 });
+		return function(){
+			console.log('Загрузка информации профиля ...');
+			Library('Profile', {}, function(data){
+				// Внешние профили
+				data.insocial = '';
+				var sUrl = {
+					'vk' : function(e){ return 'https://vk.com/id' + e; },
+					'fb' : function(e){ return 'https://facebook.com/profile.php?id=' + e; },
+					'gp' : function(e){ return 'https://plus.google.com/u/0/' + e; }
+				};
+				for (var p in data.social){
+					var s = data.social[p].sid;
+					data.social[p].url = sUrl[s.substr(0, 2)](s.substr(2))
+					data.social[p].picture = data.social[p].picture ? '<img src="'+data.social[p].picture+'">' : '';
+					data.insocial += Templates('eSocial', data.social[p]);
 				}
+				if (data.cover) {
+					data.cover = '<img width="100%" src="' + hard + data.cover + 'cover_large.jpg">';
+				} else {
+					data.cover = '';
+				}
+
+				// Вставка шаблона
+				$('#right').html( Templates('profileContent', data) );
+				$('#media').addClass('HideInfo');
+
+				// Перетаскиваемость альбомов
+				$('.e').removeClass('exist');
+				$('.e.ui-draggable').draggable("enable");
+
+
+				var AlbumInsert = function(id){
+					var a = FindAlbum( id );
+					a.img = '';
+					a.color = 'eee';
+
+					for (var i in data.covers) {
+						if (data.covers[i].album == a.id) {
+							var imageFade = 'style="display:none" onload="$(this).fadeIn(300)"';
+							a.img = data.covers[i].src_small;
+							if (!a.img) a.img = data.covers[i].src_main;
+							a.img = '<img src="' + hard + a.img + '" ' + imageFade + '/>';
+							a.color = data.covers[i].color;
+						}
+					}
+					
+					$('#right .m').append( Templates('galleryElement', a) );
+					
+					// Элементы в панели слева пометить, если они есть в галерее:
+					var H = $('.e.ui-draggable[data-id="' + a.id + '"]').draggable("disable").addClass('exist');
+					var E = $('.a-cover[data-id="' + a.id + '"]');
+					E.find('.del').click(function(){
+						Library('AlbumEdit', {aid : a.id, data : [a.title, a.desc, 2]}, function(e){
+							E.remove();
+							H.draggable("enable").removeClass('exist');
+						});
+					});
+				};
+				for (var i in data.albums) AlbumInsert(data.albums[i])
+
+				// Сртировка альбомов в профиле
+				$('#right .m').sortable({ 
+					cancel: ".drag-helper",
+					helper : 'clone',
+					scroll : true,
+					stop : function(){
+						var ordered = {};
+						$('#right .m .a-cover').each(function(i, e){ ordered[i] = $(this).data('id'); });
+						Library('ProfileAlbumsOrder', { ordered : ordered });
+					}
+				}).disableSelection();
+
+				$('#right .g-albums-dp').droppable({
+					hoverClass : 'hover',
+					drop : function(h, t){
+						if (!t.draggable.hasClass('e')) return;
+						var aid = t.draggable.data('id');
+						Library('ProfileAddAlbums', { aid : aid, cnt : $('#right .m .a-cover').length }, function(ret){
+							if (ret.covers && ret.covers[0]) data.covers.push(ret.covers[0]);
+							AlbumInsert(aid);
+						});
+					}
+				});
+
+
+
+				// Красивость домена
+				$('.pfl .url span').html(location.origin + '/');
+				var url = $('.pfl .url input').css({ paddingLeft : $('.pfl .url span').width() + 8 });
+				// Привязка соц-сетей
+				$('.pfl .ss a').click(OAuth);
+				// Загрузка  обложки
+				$('.pfl .c').click(function(){
+				    $('#cover-upload').find('input').click();
+				});
+				var ul = $('.status'), info = false;
+				$('#cover-upload').fileupload({
+					dropZone: $('.pfl .c'),
+				    add: function (e, data) {
+				        var tpl = $('<div/>');
+				        tpl.find('p').text(data.files[0].name).append('<i>' + data.files[0].size + '</i>');
+				        data.context = tpl.appendTo(ul);
+				        tpl.find('input').knob();
+				        tpl.find('span').click(function(){
+				            if(tpl.hasClass('working')) jqXHR.abort();
+				            tpl.fadeOut(tpl.remove);
+				        });
+				        // Automatically upload the file once it is added to the queue
+				        var jqXHR = data.submit();
+				    },
+					progress: function(e, data){ 
+						var progress = parseInt(data.loaded / data.total * 100, 10);
+						$('.pfl .status i').css({ width: progress + '%' });
+						info = data; 
+					},
+				    stop : function(e){
+				        var src = hard + info.result + 'cover_large.jpg';
+						$('.pfl .c img').attr('src', src + '?' + Math.random());
+						$('.pfl .status i').css({ width: 0 });
+					}
+				});
+				// Prevent the default action when a file is dropped on the window
+				$(document).on('drop dragover', function (e) {
+				    e.preventDefault();
+				});
+
+				// Вставка альбомов и галерей профиля
+				console.log(albums);
+				console.log(gallery);
+				console.log(data);
+
+				// Внесение изменений
+				$('.pfl input, .pfl textarea').keyup(function(){
+					Stack(function(){
+						var data = [];
+						$('.pfl input, .pfl textarea').each(function(){
+							data.push($(this).val());
+						});
+						Library('ProfileInfo', {data : data});
+					}, 1000);
+				});
+				Waves.displayEffect();
 			});
-			// Prevent the default action when a file is dropped on the window
-			$(document).on('drop dragover', function (e) {
-			    e.preventDefault();
-			});
-			// Вставка альбомов и галерей профиля
-			console.log(albums);
-			console.log(gallery);
-			console.log(data);
-			// Внесение изменений
-			$('.pfl input, .pfl textarea').keyup(function(){
-				Stack(SaveProfileData, 1000);
-			});
-			Waves.displayEffect();
 		};
-		var LoadContent = function(){
-			console.log('Загрузка информации профиля');
-			Library('Profile', {}, DisplayProfile);
-		};
-		return LoadContent;
 	}());
 
 	// !- Контекстное меню
@@ -1011,7 +1076,7 @@ var Media = (function(){
 		Context.Init('#list .album', ['AS', 'AW', 'AD', '--', 'AC', 'GC']);
 		Context.Init('#list .gall', ['GS', 'GW', 'GD', '--', 'AC', 'GC']);
 		
-		var draggable = $('.gallery.frame').length > 0 ? true : false;
+		var draggable = $('.gallery.frame, .pfl.frame').length > 0 ? true : false;
 		if (!draggable) $('.e.ui-draggable').draggable("disable");
 	}
 	// Обновление панели с запросом к серверу
@@ -1068,17 +1133,14 @@ var Media = (function(){
 	    if (e.keyCode == 221) Album.RotateImages('right'); // ]
 
 		if (([46,68,8]).indexOf(e.keyCode) != -1){ Album.Img.ImagesToAlbum(-1); Album.View.Close(); } // Удалить: del, back, D
-
-	    console.log(e.keyCode);
-
 	});
+
 	$(window).resize(function(){
 		Album.View.Resize();
 	});
+
 	Waves.displayEffect();
 
-	document.onmousemove = function(e){ mouse = [e.pageX, e.pageY] };
-	
 	return {
 		'Context' : Context
 	};
