@@ -6,20 +6,8 @@
 // -> проверка TOKEN'а -> успех
 
 class Social {
-	private static $hostname = 'https://mazepa.us/login/oauth?type=';
 
-	// ВКОНТАКТЕ
-	private static $vkID = ''; // ID приложения
-	private static $vkCD = ''; // Kлюч приложения
-
-	// FACEBOOK
-	private static $fbID = ''; // ID приложения
-	private static $fbCD = ''; // Ключ приложения
-
-	// GOOGLE+
-	private static $gpID = ''; // ID приложения
-	private static $gpCD = ''; // Ключ приложения
-
+	// ---------------------------------------------------------------------- //
 	public static function Init(){
 		if (@$_GET['type'] == 'fb') return self::Fb();
 		if (@$_GET['type'] == 'vk') return self::Vk();
@@ -34,13 +22,12 @@ class Social {
 		
 		// Получение token'а
 		$request = [
-			'client_id'     => self::$vkID, 
-			'client_secret' => self::$vkCD, 
+			'client_id'     => vkID, 
+			'client_secret' => vkCD, 
 			'code'          => $_GET['code'], 
-			'redirect_uri'  => self::$hostname.'vk'
+			'redirect_uri'  => URLOAUTH . 'vk'
 		];
 		$data = json_decode( @ file_get_contents( 'https://oauth.vk.com/access_token?' . http_build_query($request)));
-		//echo ('<pre> ' . 'https://oauth.vk.com/access_token?' . http_build_query($request));  exit;
 		if( @!$data->access_token ) die('<pre>Error#1');
 		
 		// Проверка token'а
@@ -62,10 +49,10 @@ class Social {
 	// Facebook
 	private static function Fb(){
 		$request = [
-			'client_id'     => self::$fbID, 
-			'client_secret' => self::$fbCD, 
+			'client_id'     => fbID, 
+			'client_secret' => fbCD, 
 			'code'          => $_GET['code'], 
-			'redirect_uri'  => self::$hostname.'fb'
+			'redirect_uri'  => URLOAUTH . 'fb'
 		];
 		$data = json_decode( @file_get_contents( 'https://graph.facebook.com/v2.3/oauth/access_token?' . http_build_query($request)));
 		if( @!$data->access_token ) die('<pre>Error#1');
@@ -94,9 +81,9 @@ class Social {
 		// Получение token'а
 		$postdata = http_build_query([
 			'code' => $_GET['code'],
-			'client_id' => self::$gpID,
-			'client_secret' => self::$gpCD,
-			'redirect_uri' => self::$hostname . 'gp',
+			'client_id' => gpID,
+			'client_secret' => gpCD,
+			'redirect_uri' => URLOAUTH . 'gp',
 			'grant_type' => 'authorization_code'
 		]);
 		$opts = ['http' => [ 
