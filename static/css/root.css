@@ -129,7 +129,7 @@ html { background: #999; overflow: hidden }
   .tags {  font-weight: 100; }
   .tagsinput { position: relative; }
   .tagsinput input { margin-top: 5px; }
-  .friendsbox { position: absolute; overflow: hidden; border: 1px solid #eee; border-radius: 5px; width: 100%; margin-top:2px; display: none }
+  .friendsbox { position: absolute; overflow: hidden; border: 1px solid #eee; border-radius: 5px; width: 100%; margin-top:2px; display: none; background: #fff }
   .friendsbox .l { text-align: center; padding: 10px; }
   .tags .f { border-bottom: 1px solid #eee; position: relative }
   .tags .f:last-child { border-bottom: none; }
@@ -173,6 +173,7 @@ html { background: #999; overflow: hidden }
   #ainfo p { margin-bottom: 7px; }
   #ainfo .privacy {}
    #ainfo hr { margin: 15px -9px 10px -9px; }
+   #ainfo .qr { margin: auto; width: 180px; }
    #ainfo .privacy label { width: 92px; float: left; line-height: 17px; }
    #ainfo .privacy select { width: 180px; }
  /* ### Image */
@@ -216,16 +217,19 @@ html { background: #999; overflow: hidden }
   .pfl .s .url { position: relative; }
   .pfl .s .url > span { font-size: 13px; position: absolute; padding: 5px 0 5px 8px; line-height: 21px; z-index: 10; color: #555 }
   .pfl .s .url > input {  }
-  .pfl .es { overflow: hidden; margin: 5px 0 7px 0; line-height: 17px; background: rgba(0, 0, 0, 0.02); border-radius: 3px; position: relative; }
-  .pfl .es img { width: 52px; float: left }
-  .pfl .es .pic { overflow: hidden; border-radius: 3px; width: 52px; height: 52px; display: block; float: left; margin-right: 5px; background: #000; }
-  .pfl .es .pic img { border-radius: 3px; }
-  .pfl .es .del { position: absolute; right: 3px; top: 3px; line-height: 12px; background: #fff }
+  .pfl .social { margin-bottom: 10px; }
+  .pfl .es { overflow: hidden; padding: 2px 3px; line-height: 17px; position: relative; }
+  .pfl .es:hover { background: rgba(0,0,0,0.05); border-radius: 3px; }
+  .pfl .es a { text-decoration: none; }
+  .pfl .es p { margin: 0 }
+  .pfl .es .del { position: absolute; right: 5px; top: 3px; line-height: 15px; }
   .pfl .es:first-child .del { display: none }
   .pfl .status { float: right; width: 100%; height: 6px; margin: 0px 0; position: absolute }
   .pfl .status i { position: absolute; left: 0; height: 6px; width: 0; background: rgba(0, 0, 0, 0.5); }
   .pfl #cover-upload { display: none; }
-  .social .es p {margin: 5px 0 0 57px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+  .social .es p { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+  .pfl .qr-profile { width: 25%; height: 150px; float: left; }
+  .pfl .url-profile { width: 75%; float: right; font-size: 20px; padding: 60px; text-align: center; overflow: hidden; text-overflow: ellipsis; }
  /* ## Profile medialist */
  .pfl .m {}
  .pfl .m {}

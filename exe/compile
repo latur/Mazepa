@@ -1,0 +1,56 @@
+#!/usr/bin/php
+<?php
+
+/** 
+ * Собрка воедино всех JS и CSS файлов:
+ * cd /home/mathilde/www/mazepa.us/ && ./exe/compile 
+ * ./exe/compile   - сборка с минимизацией 
+ * ./exe/compile s - простая сборка без минимизации 
+ */ 
+
+$css = [
+	"static/css/mazepa.css",
+	"static/css/waves.css",
+	"static/css/icons.css",
+	"static/css/jelly.css",
+	"static/css/simptip.css"
+];
+
+$js = [
+	''        => ['app','lib/waves'],
+	'about'   => ['app','lib/waves','lib/fsvs.bundle','lib/waves', 'about'],
+	'album'   => ['app','lib/waves','lib/photoswipe.min','lib/photoswipe-ui-default.min','media'],
+	'gallery' => ['app','lib/waves','media'],
+	'index'   => ['app','lib/waves','lib/jquery-ui.min', 'index'],
+	'invite'  => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','invite'],
+	'root'    => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','lib/jquery-ui.min','lib/jquery.knob','lib/root.upload-init','lib/qr','root']
+];
+
+
+// CSS
+echo "\n > CSS...\n";
+exec("rm -f cache/*.css");
+exec("cat ". implode(" ", $css). " > cache/@style.css\n");
+exec("ls cache/*.css", $exec);
+foreach ($exec as $f) file_put_contents($f, M(file_get_contents($f), 'cssminifier.com'));
+
+// JS
+echo "\n > JS...\n";
+exec("rm -f cache/*.js");
+$log = "";
+foreach ($js as $result => $files) {
+	foreach ($files as $f) file_put_contents("static/js/$f.jmin", M(file_get_contents("static/js/$f.js")));
+	exec("cat static/js/". implode(".jmin static/js/", $files). ".jmin > cache/@{$result}.js\n");
+	echo " # $result:\n   cat static/js/". implode(".js static/js/", $files). ".js > cache/@{$result}.js\n";
+}
+
+exec("rm -f static/js/*.jmin static/js/lib/*.jmin");
+echo "$log\nOk\n\n";
+
+function M($e, $url = 'javascript-minifier.com'){
+	if (@$_SERVER['argv'][1] == 's') return $e;
+	$data = http_build_query(['input' => $e]);
+	exec("curl -s 'http://$url/raw' --data '{$data}'", $exec);
+	$R = implode('', $exec);
+	return $R == '' ? 'console.log("Fail")' : $R;
+}

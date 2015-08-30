@@ -33,6 +33,7 @@
 		</div>
 	</div>
 	<? } ?>
+	<script>var host = '<?=HOST?>', hard = '<?=MEDIA?>';</script>
 	<script>var token = '<?=@Ego::AddToken()?>', level = <?=(int)$this->user['level']?>;</script>
 	<script src="/<?=$contentjs?>"></script>
 </body>

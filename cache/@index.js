@@ -1,5 +1,3 @@
-var host     = 'mazepa.us';
-var hard     = '//hard.mazepa.us';
 var token    = token || '';
 var api      = api   || '/root/library/'
 

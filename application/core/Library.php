@@ -423,7 +423,7 @@ class Library extends Init {
 			set `name` = ?, `username` = ?, `text` = ? 
 			where `id` = '{$this->user['id']}'");
 		$e->execute($data);
-		return [ 'success' => true ];
+		return [ 'success' => true, 'username' => $data[1]];
 	}
 
 	/**

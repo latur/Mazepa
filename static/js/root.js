@@ -506,6 +506,11 @@ var Media = (function(){
 		var LoadContent = function(aid){
 			current = FindAlbum(aid);
 			if (!current) return false;
+			if (aid > 0) {
+				current.qr = '<img width="100%" src="' + (QRCode.generatePNG(current.url, {'modulesize' : 7})) + '">';
+			} else {
+				current.qr = '';
+			}
 			Uploader.Close();
 			$('#media').removeClass('HideInfo');
 			$('#right').html( Templates('albumContent', current) );
@@ -530,6 +535,7 @@ var Media = (function(){
 					});
 				});
 			}
+			
 			setTimeout(function(){
 				Library('Images', {aid : aid}, DisplayImages)
 			}, 300);
@@ -787,14 +793,19 @@ var Media = (function(){
 				// Внешние профили
 				data.insocial = '';
 				var sUrl = {
-					'vk' : function(e){ return 'https://vk.com/id' + e; },
-					'fb' : function(e){ return 'https://facebook.com/profile.php?id=' + e; },
-					'gp' : function(e){ return 'https://plus.google.com/u/0/' + e; }
+					'v' : function(e){ return 'https://vk.com/id' + e; },
+					'f' : function(e){ return 'https://facebook.com/profile.php?id=' + e; },
+					'g' : function(e){ return 'https://plus.google.com/u/0/' + e; }
+				};
+				var icon = {
+					'v' : 'vkontakte',
+					'f' : 'facebook',
+					'g' : 'googleplus'
 				};
 				for (var p in data.social){
 					var s = data.social[p].sid;
-					data.social[p].url = sUrl[s.substr(0, 2)](s.substr(2))
-					data.social[p].picture = data.social[p].picture ? '<img src="'+data.social[p].picture+'">' : '';
+					data.social[p].icon = icon[ s[0] ];
+					data.social[p].url = sUrl[s[0]](s.substr(2));
 					data.insocial += Templates('eSocial', data.social[p]);
 				}
 				if (data.cover) {
@@ -802,10 +813,18 @@ var Media = (function(){
 				} else {
 					data.cover = '';
 				}
-
+				
 				// Вставка шаблона
 				$('#right').html( Templates('profileContent', data) );
 				$('#media').addClass('HideInfo');
+
+				var ShowQR = function(uname) {
+					data.url = location.protocol + '//' + host + '/' + (uname || data.username);
+					data.qr = '<img height="100%" src="' + (QRCode.generatePNG(data.url, {'modulesize' : 10})) + '">';
+					$('#right .pfl .qr').html( Templates('profileContentQR', data) );
+				};
+				
+				ShowQR();
 
 				// Перетаскиваемость альбомов
 				$('.e').removeClass('exist');
@@ -852,7 +871,6 @@ var Media = (function(){
 						Library('ProfileAlbumsOrder', { ordered : ordered });
 					}
 				}).disableSelection();
-
 				$('#right .g-albums-dp').droppable({
 					hoverClass : 'hover',
 					drop : function(h, t){
@@ -865,13 +883,13 @@ var Media = (function(){
 					}
 				});
 
-
-
 				// Красивость домена
 				$('.pfl .url span').html(location.origin + '/');
 				var url = $('.pfl .url input').css({ paddingLeft : $('.pfl .url span').width() + 8 });
+
 				// Привязка соц-сетей
 				$('.pfl .ss a').click(OAuth);
+
 				// Загрузка  обложки
 				$('.pfl .c').click(function(){
 				    $('#cover-upload').find('input').click();
@@ -907,9 +925,7 @@ var Media = (function(){
 				    e.preventDefault();
 				});
 
-				// Вставка альбомов и галерей профиля
-				console.log(albums);
-				console.log(gallery);
+				// Вставка альбомов профиля
 				console.log(data);
 
 				// Внесение изменений
@@ -919,7 +935,9 @@ var Media = (function(){
 						$('.pfl input, .pfl textarea').each(function(){
 							data.push($(this).val());
 						});
-						Library('ProfileInfo', {data : data});
+						Library('ProfileInfo', {data : data}, function(res){
+							ShowQR(res.username);
+						});
 					}, 1000);
 				});
 				Waves.displayEffect();
@@ -989,7 +1007,7 @@ var Media = (function(){
 			}
 
 			var x = E.clientX, y = E.clientY;
-			if (y + $('#cmenu').height() > document.height) y = y - $('#cmenu').height() - 10; 
+			if (y + $('#cmenu').height() + 20 > document.height) y = y - $('#cmenu').height() - 10; 
 			menu.css({ left : x, top : y });
 			console.log([$('#cmenu').height(), document.height, 1]);
 			
@@ -1087,6 +1105,7 @@ var Media = (function(){
 		};
 		return e ? List(e) : Library('Media', {}, List);
 	}
+	
 
 	// Добропожаловать!
 	function Main(){

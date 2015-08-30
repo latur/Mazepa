@@ -134,6 +134,8 @@
 			<div class="friendsbox"> <div class="l">Загрузка</div> </div>
 		</div>
 	</div>
+	<hr />
+	<div class="qr">{qr}</div>
 </div>
 <div class="template" id="imageColors">
 	<div class="c" style="width:{W}px"><a href="{color}" style="background:#{color}" title="{T}"></a></div>
@@ -206,10 +208,8 @@
 </div>
 <div class="template" id="eSocial">
 	<div class="es">
-		<span class="inset pic">{picture}</span> 
-		<p><span class="name">{name}</span> </p>
-		<p><a class="ext-url" target="_blank" href="{url}">{url}</a></p>
-		<a class="del waves-effect waves-button waves-float mini" data-sid="{sid}">Отвязать</a>
+		<p><span class="icon icon-{icon}-rect"></span> <a class="ext-url" target="_blank" href="{url}"><span class="name">{name}</span></a> </p>
+		<a class="del" data-sid="{sid}">Отвязать</a>
 	</div>
 </div>
 <div class="template" id="galleryContent">
@@ -278,7 +278,13 @@
 			</div>
 			<div class="m"></div>
 		</div>
+		<div class="box qr">
+		</div>
 	</div>
+</div>
+<div class="template" id="profileContentQR">
+	<div class="qr-profile">{qr}</div>
+	<div class="url-profile"><a href="{url}">{url}</a></div>
 </div>
 <div class="template" id="contextMenu">
 	<div class="background" id="cMenuBG"></div>
