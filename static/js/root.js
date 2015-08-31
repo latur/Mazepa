@@ -191,12 +191,37 @@ var Media = (function(){
 				col.find('a').click(function(e){
 					e.preventDefault();
 					var color = $(this).attr('href');
-					console.log(color);
-					//insert_album_html('Поиск по цвету: 
-					// <span class="color"><i style="background:#' + color + ';"> </i> #' + color + '</span>', 'color');
-					//api('color_search', { color : color}, function(ret){ picts = ret.images; insert_images(); });
+					var title = 'Поиск по цвету: <span class="color"><i style="background:#' + color + ';"> </i> #' + color + '</span>';
+					$('#right').html( Templates('albumContent', {'title' : title, 'option' : ''}) );
+					Library('ColorSearch', {color : InColore(color)}, function(e){
+						LoadImages(e);
+					});
 				});
 			}
+			// Все близкие цвета для данного
+			function InColore(rgb){
+				// Используется округлённое значение, так что так можно:
+				var delta = function(s){
+					var d = [ s ];
+					var k = parseInt(s, 16);
+					if (k > 0 ) d.push( (k - 1).toString(16) );
+					if (k < 15) d.push( (k + 1).toString(16) );
+					return d;
+				};
+				var dD = [ ];
+				var d0 = delta(rgb[0]);
+				for (var i0 in d0){
+					var d2 = delta(rgb[2]);
+					for (var i2 in d2){
+						var d4 = delta(rgb[4]);
+						for (var i4 in d4){
+							dD.push( d0[i0]+d0[i0] + d2[i2]+d2[i2] + d4[i4]+d4[i4] );
+						}
+					}
+				}
+				return dD;
+			}
+			
 			// Получение информации с сервера
 			function Get(key){
 				var mid = key.split(':')[1] || key;
@@ -397,11 +422,57 @@ var Media = (function(){
 			window.open(current.url);
 		};
 
-		var DisplayImages = function(e){
-			var tags = e.tags, dropped;
+		var LoadContent = function(aid){
+			current = FindAlbum(aid);
+			if (!current) return false;
+			if (aid > 0) {
+				current.qr = '<img width="100%" src="' + (QRCode.generatePNG(current.url, {'modulesize' : 7})) + '">';
+			} else {
+				current.qr = '';
+			}
+			Uploader.Close();
+			$('#media').removeClass('HideInfo');
+			$('#right').html( Templates('albumContent', current) );
+			$('#ainfo').html( Templates('editAlbumInfo', current) );
+			$('[name="privacy"]').val(current.privacy);
+			$('.e').removeClass('sel exist');
+			$('.e[data-id="'+aid+'"]').addClass('sel');
+			Img.Clear();
+			$('#DeleteAlbum').click(Delete);
+			$('#ViewAlbum').click(Go);
+			$('#ainfo select').change(SaveAlbumData);
+			$('#ainfo .sent input, #ainfo .sent textarea').keyup(function(){
+				Stack(SaveAlbumData, 1000);
+			});
+
+			if (aid <= 0) Uploader.Open();
+			if (aid == -1) { 
+				$('.h .option').click(function(){
+					Library('ClearTrash', {}, function(){
+						console.log('Корзина очищена');
+						$('#images > *').fadeOut(100, function(){ $(this).remove() });
+					});
+				});
+			}
+			
+			setTimeout(function(){
+				Library('Images', {aid : aid}, DisplayImages)
+			}, 300);
+		};
+
+		var Create = function(){
+			setTimeout(function(){
+				Modal.Open( Templates('createAlbum'), function(e){
+					e.find('.save').click(function(){
+						SaveAlbumData(InputsData( $('.msg') ), true);
+					});
+					e.find('.cancel').click(Modal.Close);
+				});
+			}, 250);
+		};
+		
+		function LoadImages(e){
 			images = e.images;
-			// $('.isort').removeClass('isort');
-			$('.e.ui-draggable').draggable("disable");
 			for (var i in images) {
 				var imageFade = 'style="display:none" onload="$(this).fadeIn(300)"';
 				images[i].thumb = '<img src="' + hard + images[i].src_thumb + '" '+imageFade+' />';
@@ -418,6 +489,19 @@ var Media = (function(){
 					Img.ImagesToAlbum( e.target.dataset.id );
 				}
 			});
+			if (Context) {
+				if (current.aid == -1) {
+					Context.Init('#images .image', ['IP']);
+				} else {
+					Context.Init('#images .image', ['IP', 'ID', 'EX', '--', 'IR','IL', '--', 'ISN','ISD','ISI', '--', 'IF','IQ']);
+				}
+			}
+		}
+		
+		function DisplayImages(e){
+			var tags = e.tags, dropped;
+			$('.e.ui-draggable').draggable("disable");
+			LoadImages(e);
 
 			$('#images').sortable({
 				connectWith: ".album",
@@ -439,13 +523,6 @@ var Media = (function(){
 				}
 			});
 			
-			if (Context) {
-				if (current.aid == -1) {
-					Context.Init('#images .image', ['IP']);
-				} else {
-					Context.Init('#images .image', ['IP', 'ID', 'EX', '--', 'IR','IL', '--', 'ISN','ISD','ISI', '--', 'IF','IQ']);
-				}
-			}
 			
 			// Метки альбома
 			(function(){
@@ -501,55 +578,6 @@ var Media = (function(){
 			}());
 			
 			//Sortable(  );
-		};
-		
-		var LoadContent = function(aid){
-			current = FindAlbum(aid);
-			if (!current) return false;
-			if (aid > 0) {
-				current.qr = '<img width="100%" src="' + (QRCode.generatePNG(current.url, {'modulesize' : 7})) + '">';
-			} else {
-				current.qr = '';
-			}
-			Uploader.Close();
-			$('#media').removeClass('HideInfo');
-			$('#right').html( Templates('albumContent', current) );
-			$('#ainfo').html( Templates('editAlbumInfo', current) );
-			$('[name="privacy"]').val(current.privacy);
-			$('.e').removeClass('sel exist');
-			$('.e[data-id="'+aid+'"]').addClass('sel');
-			Img.Clear();
-			$('#DeleteAlbum').click(Delete);
-			$('#ViewAlbum').click(Go);
-			$('#ainfo select').change(SaveAlbumData);
-			$('#ainfo .sent input, #ainfo .sent textarea').keyup(function(){
-				Stack(SaveAlbumData, 1000);
-			});
-
-			if (aid <= 0) Uploader.Open();
-			if (aid == -1) { 
-				$('.h .option').click(function(){
-					Library('ClearTrash', {}, function(){
-						console.log('Корзина очищена');
-						$('#images > *').fadeOut(100, function(){ $(this).remove() });
-					});
-				});
-			}
-			
-			setTimeout(function(){
-				Library('Images', {aid : aid}, DisplayImages)
-			}, 300);
-		};
-
-		var Create = function(){
-			setTimeout(function(){
-				Modal.Open( Templates('createAlbum'), function(e){
-					e.find('.save').click(function(){
-						SaveAlbumData(InputsData( $('.msg') ), true);
-					});
-					e.find('.cancel').click(Modal.Close);
-				});
-			}, 250);
 		};
 
 		function SaveAlbumData(data, newalbum){
@@ -1115,7 +1143,6 @@ var Media = (function(){
 		};
 		return e ? List(e) : Library('Media', {}, List);
 	}
-	
 
 	// Добропожаловать!
 	function Main(){
@@ -1174,16 +1201,3 @@ var Media = (function(){
 		'Context' : Context
 	};
 }());
-
-/*
-	// ! QR
-	function openQR(string){
-		var src = QRCode.generatePNG(string, {'modulesize' : 15});
-		$('<div class="fqr"><img src="'+src+'" /></div>').appendTo('#main');
-		$('.fqr').click(closeQR).fadeIn(200);
-	}
-	function closeQR(){
-		var e = $('.fqr').fadeOut(200);
-		setTimeout(function(){ e.remove(); }, 200);
-	}
-*/

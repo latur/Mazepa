@@ -483,6 +483,25 @@ class Library extends Init {
 		return ['result' => @$data['id'] ? $data['id'] : 0];
 	}
 
+	/**
+	 * Поиск по медиатеке автора по цвету
+	 */
+	public function __ColorSearch(){
+		$colores = [];
+		foreach (@$_POST['color'] as $rgb) {
+			if(preg_match('/^[a-f0-9]{6}/i', $rgb)) $colores[] = $rgb;
+		}
+
+		if ($colores == []) return [];
+		$color = implode("','", $colores);
+		$e = $this->db->query("select * from (select `mazepa_media`.*, `mazepa_colors`.`val` from `mazepa_colors` 
+			left join `mazepa_media` on `mazepa_media`.`id` = `mazepa_colors`.`media`
+			where `mazepa_colors`.`color` in ('$color') and `mazepa_media`.`owner` = '{$this->user['id']}'
+			group by `mazepa_media`.`id`) as `tmp` order by `tmp`.`val` desc limit 150");
+		return ['images' => $e->fetchAll(PDO::FETCH_ASSOC) ];
+	}
+
+
 	/*! --------------------------------------------------------------------- */
 
 
@@ -523,11 +542,5 @@ class Library extends Init {
 		$this->db->exec("update `mazepa_invites` set `inviter` = '{$this->owner}' where `user` = '{$id}'");
 		$this->db->commit();
 		return [];
-	}
-	// Поиск по медиатеке автора по цвету
-	public function __color_search(){
-		$color = substr(@$_POST['color'], 0, 6);
-		if(!preg_match('/^[a-z0-9]+/i', $color)) return false;
-		return $this->color_search($color, $this->owner);
 	}
 }
