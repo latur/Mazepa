@@ -3,6 +3,7 @@ define('HOST',    'mazepa.us');
 define('MEDIA',   '//hard.mazepa.us');
 define('CACHE',   '/www/mazepa.us/cache/');
 define('EXPORTS', '/www/hard.mazepa.us');
+define('LOG',     '/log/');
 define('CONVERT', '/usr/bin/convert ');
 define('EXIF',    '/usr/bin/exiftool ');
 define('OPTIM',   '/usr/bin/jpegoptim ');

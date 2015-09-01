@@ -1,5 +1,3 @@
-<link href="/static/css/root.css" rel="stylesheet" type="text/css">
-
 <div id="media" class="HideInfo">
 	<div id="left">
 		<div id="search"><input type="text" class="form-c" placeholder="Поиск по альбомам и галереям" /></div>
@@ -301,3 +299,5 @@
 </div>
 
 <? /* [END] Шаблоны */ ?>
+
+<link href="/cache/@root.css" rel="stylesheet" type="text/css">

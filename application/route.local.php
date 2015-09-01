@@ -7,6 +7,13 @@ $route->Add("GET", "/root", function($e){
 	$app->View('root');
 });
 
+// Медиатека: действия
+$route->Add("POST", "/root/library/([A-z\_]{4,64})", function($e){
+	$app = new Library();
+	if ($app->user['level'] < 2) return false;
+	$app->Call(@$e[1]);
+});
+
 // Медиатека: загрузка изображений
 $route->Add("POST", "/upload", function($e){
 	$app = new FileUpload();
@@ -31,13 +38,21 @@ $route->Add("POST", "/upload", function($e){
 	Init::Error(404);
 });
 
-// Медиатека: действия
-$route->Add("POST", "/root/library/([A-z\_]{4,64})", function($e){
-	$app = new Library();
+// Статистика
+$route->Add("GET", "/stats", function($e){
+	$app = new Stats();
+	if ($app->user['level'] < 2) return false;
+	$app->View('stats', [
+		'files' => $app->Filenames()
+	]);
+});
+
+// Статистика: запросы
+$route->Add("POST", "/stats/([A-z\_]{4,64})", function($e){
+	$app = new Stats();
 	if ($app->user['level'] < 2) return false;
 	$app->Call(@$e[1]);
 });
-
 
 // Главная страница: лента новостей
 $route->Add("GET", "/", function($e){

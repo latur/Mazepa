@@ -1,0 +1,5 @@
+#main { position: relative }
+#filecontent { margin: 90px 3px 3px 10px; font-weight: 100; font-size: 12px; overflow: auto; font-family: monospace; white-space: pre; }
+.stat-panel { position: fixed; top:49px; left: 0; right: 0; padding: 10px; background: #4A4A4A; }
+
+
