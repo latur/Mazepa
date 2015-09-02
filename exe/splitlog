@@ -1,0 +1,30 @@
+#!/usr/bin/php
+<?php
+
+/** 
+ * Разбивка log-файлов на части по 2500 строк
+ * Запускать по крон-заданию из текущей папки. 
+ * Пример:
+ * cd /home/mathilde/www/mazepa.us/ && chmod +x exe/splitlog && ./exe/splitlog
+ */ 
+
+exec("ls log/*.log", $logfiles);
+
+foreach ($logfiles as $f) {
+
+	// Разбивка log файла на части по 2500 строк
+	$parts = [];
+	exec("split -l 2500 $f log/archive/tmp. && rm -f $f");
+	exec("ls log/archive/tmp.*", $parts);
+
+	// Последний файл не полон, оставляем его
+	$last = end($parts);
+	$uid  = explode(".", $f)[0];
+	exec("mv $last $f");
+
+	// Остальные файлы в архив
+	$time = time();
+	$head = array_slice($parts, 0, -1);
+	foreach ($head as $k => $part) exec("mv {$part} log/archive/{$uid}_{$time}{$k}.log");
+
+}

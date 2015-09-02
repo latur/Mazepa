@@ -1,3 +1,4 @@
 cache/*.jpg
 log/*.log
+log/archive/*.log
 application/config.php

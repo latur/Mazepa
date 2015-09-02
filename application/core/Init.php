@@ -51,7 +51,7 @@ class Init extends PDO {
 		$name = strtolower($name);
 		if(!preg_match('/^[a-z][a-z0-9]{2,256}$/i', $name)) return false;
 		if(stristr("|dev|dream|hard|shogi|text|root|admin|ftp|www|system|".
-		  "tmp|true|false|etc|albums|invited|hello|upload|application|css|".
+		  "tmp|true|false|etc|albums|invited|hello|stats|upload|application|css|".
 		  "font|img|exit|settings|", "|$name|")) return false;
 		return $name;
 	}

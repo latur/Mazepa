@@ -43,7 +43,7 @@ $route->Add("GET", "/stats", function($e){
 	$app = new Stats();
 	if ($app->user['level'] < 2) return false;
 	$app->View('stats', [
-		'files' => $app->Filenames()
+		'names' => $app->Names()
 	]);
 });
 
