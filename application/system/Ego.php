@@ -51,4 +51,28 @@ class Ego {
 		header("Pragma: no-cache");
 		if($data) echo json_encode($data);
 	}
+
+	/**
+	 * Зашифровка
+	 */
+	public static function Encrypt($string) {
+		$key = pack('H*', SECRET);
+    	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+    	$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+    	$ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $string, MCRYPT_MODE_CBC, $iv);
+    	$ciphertext = $iv . $ciphertext;
+    	$ciphertext_base64 = base64_encode($ciphertext);
+    	return $ciphertext_base64;
+	}
+
+	/**
+	 * Расшифровка
+	 */
+	public static function Decrypt($string) {
+		$key = pack('H*', SECRET);
+    	$str = base64_decode($string);
+    	$iv_dec = substr($str, 0, $iv_size);
+    	$str = substr($str, $iv_size);
+    	return mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC, $iv_dec);
+	}
 }
