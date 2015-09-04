@@ -47,6 +47,7 @@ $(function(){
 			legend: [1, 10, 40, 300],
 			legendColors: ["#f5e7d8", "#761d15"]
 		});
+
 		$('.display.p1 .m').html('Активность просмотров за последние две недели:');
 		$('.display.p1 .Y').html('Активность просмотров за последний год:');
 		
@@ -70,7 +71,8 @@ $(function(){
 		Library('ExportCode', {}, function(e){
 			window.open('/stats/export/' + e.code, '.log');
 		});
-	})
+	});
+
 	sel.change(Read);
 
 });
