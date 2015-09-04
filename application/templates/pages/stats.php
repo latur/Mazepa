@@ -1,28 +1,29 @@
-<link href="/static/css/stat.css" rel="stylesheet" type="text/css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-<link rel="stylesheet" href="/static/css/cal-heatmap.css" />
-<script type="text/javascript" src="/static/js/lib/cal-heatmap.min.js"></script>
-
 <div class="stat-panel">
 	<select id="logfile">
+		<option value="0">Просмотр .log файла...</option>
 		<? foreach ($data['names'] as $display => $filename) { ?>
 		<option value="<?=$display?>"><?=$display?></option>
 		<? } ?>
 	</select>
-	<button>Экспорт</button>
+	<button id="export">Экспорт</button>
 </div>
 
-<div class="page p1">
-	<h3>Активность просмотров за последние две недели:</h3>
+<div class="display p1">
+	<h3 class="m">Загрузка...</h3>
 	<div id="Heatmap14Days"></div>
-
-	<h3>Активность просмотров за прошедший год:</h3>
+	<h3 class="Y"></h3>
 	<div id="HeatmapYear"></div>
+	<h3 class="Ref"></h3>
+	<div class="uselect" id="Ref"></div>
+	<h3 class="Loc"></h3>
+	<div class="uselect" id="Loc"></div>
+	<h3 class="IP"></h3>
+	<div class="uselect" id="IP"></div>
 </div>
-<div class="p2">
-	<div id="filecontent"></div>
+<div class="display p2">
+	<h3></h3>
+	<div class="uselect" id="filecontent"></div>
 </div>
 
-
-
+<link href="/cache/@stats.css" rel="stylesheet" type="text/css">
 <script> var api = '/stats/'; </script>

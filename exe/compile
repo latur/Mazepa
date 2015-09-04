@@ -21,7 +21,7 @@ $js = [
 	'about'   => ['app','lib/waves','lib/fsvs.bundle','about'],
 	'album'   => ['app','lib/waves','lib/photoswipe.min','lib/photoswipe-ui-default.min','media'],
 	'gallery' => ['app','lib/waves','media'],
-	'stats'   => ['app','lib/waves','stats'],
+	'stats'   => ['app','lib/waves','lib/d3.min', 'lib/cal-heatmap.min', 'stats'],
 	'index'   => ['app','lib/waves','lib/jquery-ui.min', 'index'],
 	'invite'  => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','invite'],
 	'root'    => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','lib/jquery-ui.min','lib/jquery.knob','lib/root.upload-init','lib/qr','root']
@@ -39,6 +39,10 @@ foreach ($exec as $f) file_put_contents($f, M(file_get_contents($f), 'cssminifie
 echo "\n > ROOT CSS...\n";
 exec("cat static/css/root.css > cache/@root.css\n");
 file_put_contents("cache/@root.css", M(file_get_contents("cache/@root.css"), 'cssminifier.com'));
+// ROOT CSS
+echo "\n > STAT CSS...\n";
+exec("cat static/css/cal-heatmap.css static/css/stats.css > cache/@stats.css\n");
+file_put_contents("cache/@stats.css", M(file_get_contents("cache/@stats.css"), 'cssminifier.com'));
 
 // JS
 echo "\n > JS...\n";

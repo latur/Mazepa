@@ -38,21 +38,29 @@ $route->Add("POST", "/upload", function($e){
 	Init::Error(404);
 });
 
+
 // Статистика
 $route->Add("GET", "/stats", function($e){
 	$app = new Stats();
-	if ($app->user['level'] < 2) return false;
+	if ($app->user['level'] < 2) return Init::Error(405);
 	$app->View('stats', [
 		'names' => $app->Names()
 	]);
 });
 
+// Статистика > Экспорт
+$route->Add("GET", "/stats/export/(.+)", function($e){
+	$app = new Stats();
+	$app->Export(@$e[1]);
+});
+
 // Статистика: запросы
 $route->Add("POST", "/stats/([A-z\_]{4,64})", function($e){
 	$app = new Stats();
-	if ($app->user['level'] < 2) return false;
+	if ($app->user['level'] < 2) return Init::Error(405);
 	$app->Call(@$e[1]);
 });
+
 
 // Главная страница: лента новостей
 $route->Add("GET", "/", function($e){
@@ -64,12 +72,14 @@ $route->Add("GET", "/", function($e){
 	]);
 });
 
+
 // О сайте
 $route->Add("GET", "/about", function($e){
 	$app = new Init();
 	// css: about
 	$app->View('about');
 });
+
 
 // Вход-Выход
 $route->Add("GET", "/login/?(.*)", function($e){
@@ -78,6 +88,7 @@ $route->Add("GET", "/login/?(.*)", function($e){
 	if ($app->user['level'] == 1) $app->View('invite');
 	header("Location: /");
 });
+
 
 // Альбом, Изображение
 $route->Add("GET", "/albums/([0-9a-z]{1,16})\.?([0-9a-z]{1,16})?/?([0-9]{1,16})?", function($e){

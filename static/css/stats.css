@@ -1,0 +1,23 @@
+#main { position: relative }
+
+.stat-panel { position: fixed; top:49px; left: 0; right: 0; padding: 10px; background: #4A4A4A; z-index: 10; }
+.display { padding: 90px 10px 3px 10px; margin: 10px 0; display: none; }
+.p1 > div { margin: 10px 0 20px 0 }
+.p2 > div { margin: 5px 0 20px 0 }
+.p1 b {
+	font-weight: 100;
+    font-size: 12px;
+    font-family: monospace;
+    line-height: 19px; }
+.p1 span {
+	padding: 2px 3px;
+    background: #DADBFF;
+    margin-right: 15px;
+    float: left;
+    width: 43px;
+    font-size: 11px;
+    border-radius: 3px;
+    text-align: center; }
+
+#filecontent { font-weight: 100; font-size: 12px; overflow: auto; font-family: monospace; white-space: pre; }
+.uselect, .uselect * { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; -o-user-select: text; user-select: text; }

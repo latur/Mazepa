@@ -1,9 +1,0 @@
-#main { position: relative }
-
-.stat-panel { position: fixed; top:49px; left: 0; right: 0; padding: 10px; background: #4A4A4A; }
-.page { padding: 90px 3px 3px 10px;  }
-.p1 { margin: 10px 0; }
-.p1 > div { margin: 10px 0 20px 0 }
-
-#filecontent { font-weight: 100; font-size: 12px; overflow: auto; font-family: monospace; white-space: pre; }
-#filecontent { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; -o-user-select: text; user-select: text; }
