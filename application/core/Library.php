@@ -511,9 +511,9 @@ class Library extends Init {
 	private function AlbumCovers($aid){
 		$list = is_array($aid) ? implode(',', $aid) : $aid;
 		if ($list == "") return [];
-		$covers = $this->db->query("select `mazepa_media`.`src_small`, `mazepa_media`.`src_main`, `mazepa_media`.`color`, `mazepa_media`.`album` 
+		$covers = $this->db->query("select * from (select `mazepa_media`.`src_small`, `mazepa_media`.`src_main`, `mazepa_media`.`color`, `mazepa_media`.`album` 
 			from `mazepa_media`,`mazepa_alb_gal` where `mazepa_media`.`album` in ($list) 
-			group by `mazepa_media`.`album` order by `mazepa_media`.`order`");
+			order by `mazepa_media`.`order`) as `tmp` group by `tmp`.`album`");
 		return $covers->fetchAll(PDO::FETCH_ASSOC);
 	}
 
