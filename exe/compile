@@ -27,35 +27,36 @@ $js = [
 	'root'    => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','lib/jquery-ui.min','lib/jquery.knob','lib/root.upload-init','lib/qr','root']
 ];
 
+include('exe/Minifier.php');
+
+// JS
+echo "\n> JS...\n";
+exec("rm -f cache/*.js");
+foreach ($js as $result => $files) {
+	$f = "cache/@{$result}.js";
+	exec("cat static/js/".implode(".js static/js/", $files).".js > $f");
+	file_put_contents($f, Minifier::minify( file_get_contents($f) ));
+	echo "> $f\n";
+}
 
 // CSS
-echo "\n > CSS...\n";
+echo "> main css\n";
 exec("rm -f cache/*.css");
 exec("cat ". implode(" ", $css). " > cache/@style.css\n");
 exec("ls cache/*.css", $exec);
 foreach ($exec as $f) file_put_contents($f, M(file_get_contents($f), 'cssminifier.com'));
 
 // ROOT CSS
-echo "\n > ROOT CSS...\n";
+echo "> root css\n";
 exec("cat static/css/root.css > cache/@root.css\n");
 file_put_contents("cache/@root.css", M(file_get_contents("cache/@root.css"), 'cssminifier.com'));
-// ROOT CSS
-echo "\n > STAT CSS...\n";
+
+// STAT CSS
+echo "> stat css";
 exec("cat static/css/cal-heatmap.css static/css/stats.css > cache/@stats.css\n");
 file_put_contents("cache/@stats.css", M(file_get_contents("cache/@stats.css"), 'cssminifier.com'));
 
-// JS
-echo "\n > JS...\n";
-exec("rm -f cache/*.js");
-$log = "";
-foreach ($js as $result => $files) {
-	foreach ($files as $f) file_put_contents("static/js/$f.jmin", M(file_get_contents("static/js/$f.js")));
-	exec("cat static/js/". implode(".jmin static/js/", $files). ".jmin > cache/@{$result}.js\n");
-	echo " # $result:\n   cat static/js/". implode(".js static/js/", $files). ".js > cache/@{$result}.js\n";
-}
-
-exec("rm -f static/js/*.jmin static/js/lib/*.jmin");
-echo "$log\nOk\n\n";
+echo "\n[OK]\n";
 
 function M($e, $url = 'javascript-minifier.com'){
 	if (@$_SERVER['argv'][1] == 's') return $e;
