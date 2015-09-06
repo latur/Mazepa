@@ -413,7 +413,8 @@ var Media = (function(){
 			var aid = aid || current.id;
 			console.log('Удаление альбома: ' + aid);
 			Library('AlbumDelete', {aid : aid}, function(e){
-				Update(e);
+				Reverse(e.message, e.reverse, Update);
+				Update(e.media);
 				if (current) Main();
 			});
 		};
@@ -1153,6 +1154,18 @@ var Media = (function(){
 		$('.new .G').click(Gallery.Create);
 		Context.Init('#list', ['AC', 'GC']);
 	}
+
+	// Отменялка действий
+	function Reverse(msg, code, event) {
+		Note(msg, function(h){
+			h.find('a.cancel').css({display : 'block'}).click(function(){
+				Library('ReverseRun', {code : code}, function(e){
+					if (event) (event)();
+				});
+			});
+		});
+	};
+
 
 	Update();
 	Main();

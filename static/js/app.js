@@ -198,11 +198,29 @@ var OAuth = (function(){
 		setInterval(function(){
 			if (win.location.hash.indexOf('success') != -1){ location.reload(); win.close(); }
 		}, 400);
-		
-		// var h = (tmp.length == 3) ? window.location.protocol + '//' + tmp.slice(1).join('.') : window.location.origin;
-		// setInterval(function(){ win.postMessage(window.location.origin, h); }, 300);
 	};
 	return Init;
+}());
+
+// !# Сообщения,напоминания,инструкции
+// !Note
+var Note = (function(){
+	var Hide = function(id) {
+		var e = id ? $('#' + id) : $('.note');
+		e.addClass('remove');
+		setTimeout(function(){ e.remove(); }, 350);
+	};
+	return function(text, event) {
+		Hide();
+		var id = ('note-' + Math.random()).replace('.', 'i');
+		var data = { 'text' : text || '=]' , id : id};
+		$('#main').append( Templates('noteBlock', data) );
+		var h = $('#' + id);
+		if (event) (event)(h);
+		h.find('a').click(function(){ Hide(id) });
+		setTimeout(function(){ h.addClass('visible'); }, 150);
+		setTimeout(function(){ Hide(id) }, 7000);
+	};
 }());
 
 // -------------------------------------------------------------------------- //

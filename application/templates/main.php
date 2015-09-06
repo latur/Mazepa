@@ -32,6 +32,14 @@
 			</div>
 		</div>
 	</div>
+	<? } else { ?>
+	<div class="template" id="noteBlock">
+		<div class="note animate" id="{id}">
+			<p>{text}</p>
+			<a class="waves-effect waves-button waves-float mini cancel">Отменить</a>
+			<a class="waves-effect waves-button waves-float mini hide">Скрыть</a>
+		</div>
+	</div>
 	<? } ?>
 	<script>var host = '<?=HOST?>', hard = '<?=MEDIA?>', token = '<?=@Ego::AddToken()?>', level = <?=(int)$this->user['level']?>;</script>
 	<script src="/<?=$contentjs?>"></script>

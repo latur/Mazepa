@@ -223,11 +223,33 @@ class Library extends Init {
 	 */
 	public function __AlbumDelete(){
 		$id = (int) $_POST['aid'];
-		$e = $this->db->prepare("update `mazepa_media` set `album` = '0' where `owner` = '{$this->user['id']}' and `album` = '{$id}'");
-		$e->execute();
-		$e = $this->db->prepare("delete from `mazepa_albums` where `owner` = '{$this->user['id']}' and `id` = '{$id}'");
-		$e->execute();
-		return $this->__Media();
+
+		// Обратка: фотографии
+		$e = $this->db->query("select `id` from `mazepa_media` where `owner` = '{$this->user['id']}' and `album` = '{$id}'");
+		$ids = array_map(function($a){ return $a['id']; }, $e->fetchAll(PDO::FETCH_ASSOC));
+		// Обратка: Информация альбома
+		$e = $this->db->query("select * from `mazepa_albums` where `owner` = '{$this->user['id']}' and `id` = '{$id}'");
+		$albuminfo = $e->fetch(PDO::FETCH_ASSOC);
+		// Сообщение
+		$msg = "Альбом <b>«{$albuminfo['title']}»</b> удалён.";
+		if (count($ids) > 0 ) $msg .= " Фотографии альбома перемещены в корзину (".count($ids)."шт.)";
+
+		$albuminfo['title'] = $this->db->quote($albuminfo['title']);
+		$albuminfo['desc'] = $this->db->quote($albuminfo['desc']);
+		$sql = [
+			"update `mazepa_media` set `album` = '{$id}' where `owner` = '{$this->user['id']}' and `id` in (".implode(',', $ids).");",
+			"insert into `mazepa_albums` values (". implode(",", $albuminfo) .");"
+		];
+
+		// Удаление
+		$this->db->query("update `mazepa_media` set `album` = '0' where `owner` = '{$this->user['id']}' and `album` = '{$id}'");
+		$this->db->query("delete from `mazepa_albums` where `owner` = '{$this->user['id']}' and `id` = '{$id}'");
+		
+		return [
+			'media' => $this->__Media(), 
+			'message' => $msg,
+			'reverse' => $this->Reverse($sql)
+		];
 	}
 
 	/**
@@ -501,9 +523,27 @@ class Library extends Init {
 		return ['images' => $e->fetchAll(PDO::FETCH_ASSOC) ];
 	}
 
+	/**
+	 * Запуск обратного процесса
+	 */
+	public function __ReverseRun(){
+		$code = (int) @$_POST['code'];
+		$sql  = file_get_contents(LOG . "reverse/{$this->user['id']}-{$code}.sql");
+		if ($sql) $this->db->query($sql);
+		return [];
+	}
 
 	/*! --------------------------------------------------------------------- */
 
+	/**
+	 * Обратка действий пользователя
+	 */
+	private function Reverse($sql) {
+		$reverse = rand();
+		exec("rm -f " . LOG . "reverse/{$this->user['id']}-*");
+		file_put_contents(LOG . "reverse/{$this->user['id']}-{$reverse}.sql", implode("\n", $sql));
+		return $reverse;
+	}
 
 	/**
 	 * Получить обложку альбома | альбомов по ID
