@@ -92,7 +92,11 @@ var Media = (function(){
 					for (var i in images) if (images[i]['id'] != id) imagesR.push(images[i])
 					images = imagesR;
 				}).remove();
-				Library('ImagesToAlbum', {aid : aid, data : selected}, function(e){});
+				Library('ImagesToAlbum', {to : aid, imgs : selected}, function(e){
+					Reverse(e.message, e.reverse, function(){
+						LoadContent(current.id);
+					});
+				});
 				Clear();
 			}
 			// Когда выделено несколько фотографий:
@@ -423,7 +427,7 @@ var Media = (function(){
 			window.open(current.url);
 		};
 
-		var LoadContent = function(aid){
+		function LoadContent(aid){
 			current = FindAlbum(aid);
 			if (!current) return false;
 			if (aid > 0) {
@@ -799,6 +803,7 @@ var Media = (function(){
 		var Delete = function(gid){
 			var gid = gid || ID;
 			Library('GalleryDelete', {gid : gid}, function(e){
+				Reverse(e.message, e.reverse, Update);
 				Update();
 				if(ID) Main();
 			});

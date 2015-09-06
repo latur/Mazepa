@@ -88,13 +88,48 @@ class Library extends Init {
 	 * Удаление/перемещение фотографий
 	 */
 	public function __ImagesToAlbum(){
-		$aid = (int) $_POST['aid'];
-		if($aid > 0 && !$this->IsMy($aid, "mazepa_albums")) return [];
-		if(!is_array(@$_POST['data'])) return [];
-		$data = array_values(@$_POST['data']);
-		foreach($data as $k => $v) $data[$k] = (int) $v;
-		$this->db->exec("update `mazepa_media` set `album` = '{$aid}' where `owner` = '{$this->user['id']}' and `id` in (" .implode(', ', $data). " )");
-		return [];
+		$aid  = (int) $_POST['to'];
+		$imgs = @$_POST['imgs'];
+		if ($aid == 0 || !is_array($imgs)) return ['haha' => 1];
+
+		// Список
+		$imgs = array_values($imgs);
+		foreach($imgs as $k => $v) $imgs[$k] = (int) $v;
+		$imgs = implode(', ', $imgs);
+		
+		// Проверка авторства альбомов (from/to)
+
+		// Откуда перемещаем
+		$e = $this->db->query("select `mazepa_albums`.`title`, `mazepa_media`.`album` from `mazepa_media` 
+			left join `mazepa_albums` on `mazepa_albums`.`id` = `mazepa_media`.`album` 
+			where `mazepa_media`.`owner` = '{$this->user['id']}' and `mazepa_media`.`id` in ({$imgs}) limit 1");
+		$fromAlb = @$e->fetch(PDO::FETCH_ASSOC);
+		if (!$fromAlb || !@$fromAlb['album']) return ['haha' => 2];
+		
+		if ($fromAlb['album'] == -1) $msg = "Фотографии перемещены из корзины";
+		else if ($fromAlb['album'] == 0 ) $msg = "Фотографии перемещены из папки «Импорт»";
+		else $msg = "Фотографии перемещены из альбома <b>«{$fromAlb['title']}»</b>";
+
+		// Куда перемещаем: 
+		if ($aid == -1 || $aid == 0) {
+			$msg = "Фотографии перемещены в корзину";
+		} else {
+			$e = $this->db->query("select `title` from `mazepa_albums` where `owner` = '{$this->user['id']}' and `id` = '{$aid}' limit 1");
+			$toAlb = @$e->fetch(PDO::FETCH_ASSOC);
+			if (!$toAlb || !@$toAlb['title']) return ['haha' => 3];
+			$msg .= " в альбом <b>«{$toAlb['title']}»</b>.";
+		}
+		
+		// Обратка
+		$sql = [ "update `mazepa_media` set `album` = '{$fromAlb['album']}' where `owner` = '{$this->user['id']}' and `id` in ({$imgs})" ];
+
+		// Перемещение
+		$this->db->exec("update `mazepa_media` set `album` = '{$aid}' where `owner` = '{$this->user['id']}' and `id` in ({$imgs})");
+
+		return [
+			'message' => $msg,
+			'reverse' => $this->Reverse($sql)
+		];
 	}
 
 	/**
@@ -411,15 +446,29 @@ class Library extends Init {
 	 */
 	public function __GalleryDelete(){
 		$id = (int) $_POST['gid'];
-		$app = $this->db->query("select * from `mazepa_gallery` where `owner` = '{$this->user['id']}' and `id` = '{$id}' limit 1");
-		$G = $app->fetch(PDO::FETCH_ASSOC);
-		if(@$G['id']){
-			$e = $this->db->prepare("delete from `mazepa_gallery` where `owner` = '{$this->user['id']}' and `id` = '{$id}'");
-			$e->execute();
-			$e = $this->db->prepare("delete from `mazepa_alb_gal` where `gid` = '{$id}'");
-			$e->execute();
+		$e = $this->db->query("select * from `mazepa_gallery` where `owner` = '{$this->user['id']}' and `id` = '{$id}' limit 1");
+		$G = $e->fetch(PDO::FETCH_ASSOC);
+		if (@$G['id']) {
+			// Обратка
+			$msg = "Галерея «{$G['title']}» удалена.";
+			$G = $this->AQuote($G);
+			$sql = [ "insert into `mazepa_gallery` values (". implode(",", $G) .");" ];
+			$albgal = $this->db->query("select * from `mazepa_alb_gal` where `gid` = '{$id}'");
+			foreach ($albgal->fetchAll(PDO::FETCH_ASSOC) as $line) {
+				$sql[] = "insert into `mazepa_alb_gal` values (". implode(",", $this->AQuote($line)) .");";
+			}
+
+			// Удаление
+			$this->db->query("delete from `mazepa_gallery` where `owner` = '{$this->user['id']}' and `id` = '{$id}'");
+			$this->db->query("delete from `mazepa_alb_gal` where `gid` = '{$id}'");
+			return [
+				'media' => $this->__Media(), 
+				'message' => $msg,
+				'reverse' => $this->Reverse($sql)
+			];
 		}
-		return $this->__Media();
+		
+		return [];
 	}
 
 	/**
@@ -534,6 +583,14 @@ class Library extends Init {
 	}
 
 	/*! --------------------------------------------------------------------- */
+
+	/**
+	 * Обработка массива db->quote
+	 */
+	private function AQuote($a) {
+		foreach ($a as $k => $item) $a[$k] = $this->db->quote($item);
+		return $a;
+	}
 
 	/**
 	 * Обратка действий пользователя
