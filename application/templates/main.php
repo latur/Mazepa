@@ -36,8 +36,10 @@
 	<div class="template" id="noteBlock">
 		<div class="note animate" id="{id}">
 			<p>{text}</p>
+			<span class="control">
 			<a class="waves-effect waves-button waves-float mini cancel">Отменить</a>
 			<a class="waves-effect waves-button waves-float mini hide">Скрыть</a>
+			</span>
 		</div>
 	</div>
 	<? } ?>

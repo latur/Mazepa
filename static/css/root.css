@@ -32,7 +32,7 @@ html { background: #999; overflow: hidden }
 /* # Footer buttons */
 .ctrls {}
 .ctrls { position: absolute; bottom: 0; left: 0; right: 0; }
-.ctrls .waves-button { border-radius: 0px; }
+.ctrls .waves-button { border-radius: 0px; background: transparent; }
  .ctrls > span { float: left; height: 30px; border-top: 1px solid #f4f4f4; }
  .ctrls > span:hover { background: #222; border-color: #444; }
   .ctrls > span .icon { text-align: center; padding: 8px; font-size: 14px; color: #333; cursor: pointer; width: 100%; }

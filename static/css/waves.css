@@ -63,12 +63,16 @@
     cursor: pointer;
     border:none;
     outline:none;
-    background:#efefef;
+    background: transparent;
     color: inherit;
     font-size:14px;
     text-align: center;
     text-decoration:none;
     z-index:1;
+}
+
+.waves-button:hover {
+	background: #efefef;
 }
 
 .waves-button {

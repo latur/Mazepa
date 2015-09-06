@@ -196,11 +196,11 @@
 		<div class="th {sclass}">{images}</div>
 		<div class="r"><select class="place">{achange}</select></div>
 		<div class="c">
-			<a class="simptip-position-top simptip-smooth simptip-fade R" data-tooltip="Повернуть «[»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-ccw"></span></span></a>
-			<a class="simptip-position-top simptip-smooth simptip-fade L" data-tooltip="Повернуть «]»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-cw"></span></span></a>
-			<a class="simptip-position-top simptip-smooth simptip-fade D" data-tooltip="Удалить «Backspase»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-trash"></span></span></a>
-			<a class="simptip-position-top simptip-smooth simptip-fade F" data-tooltip="Выбрать все фотографии «F»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-ok"></span></span></a>
-			<a class="simptip-position-top simptip-smooth simptip-fade Q" data-tooltip="Отменить выбор «Q»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-cancel"></span></span></a>
+			<a class="simptip-position-bottom simptip-smooth simptip-fade R" data-tooltip="Повернуть «[»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-ccw"></span></span></a>
+			<a class="simptip-position-bottom simptip-smooth simptip-fade L" data-tooltip="Повернуть «]»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-cw"></span></span></a>
+			<a class="simptip-position-bottom simptip-smooth simptip-fade D" data-tooltip="Удалить «Backspase»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-trash"></span></span></a>
+			<a class="simptip-position-bottom simptip-smooth simptip-fade F" data-tooltip="Выбрать все фотографии «F»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-ok"></span></span></a>
+			<a class="simptip-position-bottom simptip-smooth simptip-fade Q" data-tooltip="Отменить выбор «Q»"><span class="waves-effect waves-button waves-float mini"><span class="icon icon-cancel"></span></span></a>
 		</div>
 	</div>
 </div>
