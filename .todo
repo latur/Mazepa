@@ -20,6 +20,7 @@
  ☐ root: Приглашения: отображения в админке
  ☐ Мини-мазепа: версия «из коробки» для одного человека
  ☐ Страница «о сайте»
+ ☐ На главной для неавторизованных стрёмно всё отображается, переделать бы
  
 --------------------------------------------------------------------------------
 
@@ -57,10 +58,91 @@
  * ImageMagick
  * //www.imagemagick.org/
 
+ * JShrink
+ * //github.com/tedious/JShrink/
+
 --------------------------------------------------------------------------------
 
 cd /home/mathilde/www/mazepa.us/ && chmod +x exe/compile
 # Простая сборка файлов в один:
-./exe/compile s
-# Сборка файлов в один + минимизация:
 ./exe/compile
+
+
+> mazepa.us.info
+
+root         /home/mathilde/www/mazepa.us;
+error_log    /home/mathilde/logs/nginx-mazepa.us.log;
+index        index.php;
+server_name  mazepa.us *.mazepa.us;
+charset      utf-8;
+
+location ~ ^/(application|log|exe|protectedfolder) {
+  deny  all;
+}  
+
+location ~ /\. {
+  deny all;
+  access_log off;
+  log_not_found off;
+}
+
+location / {
+  index index.php index.html index.htm;
+  try_files $uri $uri/ /index.php?$args;
+}
+
+location ~ \.(js|css|png|jpg|gif|ico|eot|svg|ttff|woff|map|wav)$ {
+  expires 1M;
+  add_header Cache-Control "public";
+  try_files $uri =404;
+}
+
+location ~ \.php$ {
+  fastcgi_pass   127.0.0.1:9000;
+  fastcgi_index  index.php;
+  fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+  include        fastcgi_params;
+}
+
+
+> /etc/nginx/nginx.conf
+
+user www-data;
+worker_processes 24;
+worker_rlimit_nofile 200000;
+pid /run/nginx.pid;
+
+events {
+  worker_connections 4000;
+  use epoll;
+  multi_accept on;
+}
+
+http {
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 25;
+  keepalive_requests 1000;
+  types_hash_max_size 2048;
+
+  log_format ingvar '$remote_addr [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent"';
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  reset_timedout_connection on;
+  client_max_body_size 80M;
+
+  error_log /var/log/nginx/error.log error;
+  access_log off;
+
+  gzip on;
+  gzip_disable    "msie6";
+  gzip_min_length 1000;
+  gzip_proxied    expired no-cache no-store private auth;
+  gzip_types      text/plain application/xml text/css application/javascript;
+
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*.conf;
+}
+
