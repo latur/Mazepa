@@ -5,8 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 	<link rel="shortcut icon" href="/favicon.ico">
-	<link href="/cache/@style.css" rel="stylesheet" type="text/css">
-	<script src="/static/js/lib/jquery-2.1.4.min.js"></script>
+	<style><?=file_get_contents("cache/@style.css")?></style>
 </head>
 <body>
 	<div id="main" class="">
@@ -44,6 +43,6 @@
 	</div>
 	<? } ?>
 	<script>var host = '<?=HOST?>', hard = '<?=MEDIA?>', token = '<?=@Ego::AddToken()?>', level = <?=(int)$this->user['level']?>;</script>
-	<script src="/<?=$contentjs?>"></script>
+	<script async src="/<?=$contentjs?>"></script>
 </body>
 </html>

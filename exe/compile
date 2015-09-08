@@ -17,14 +17,14 @@ $css = [
 ];
 
 $js = [
-	''        => ['app','lib/waves'],
-	'about'   => ['app','lib/waves','lib/fsvs.bundle','about'],
-	'album'   => ['app','lib/waves','lib/photoswipe.min','lib/photoswipe-ui-default.min','media'],
-	'gallery' => ['app','lib/waves','media'],
-	'stats'   => ['app','lib/d3.min','lib/cal-heatmap.min','stats'],
-	'index'   => ['app','lib/waves','lib/jquery-ui.min', 'index'],
-	'invite'  => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','invite'],
-	'root'    => ['app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','lib/jquery-ui.min','lib/jquery.knob','lib/root.upload-init','lib/qr','root']
+	''        => ['lib/jquery-2.1.4.min','app','lib/waves'],
+	'about'   => ['lib/jquery-2.1.4.min','app','lib/waves','lib/fsvs.bundle','about'],
+	'album'   => ['lib/jquery-2.1.4.min','app','lib/waves','lib/photoswipe.min','lib/photoswipe-ui-default.min','media'],
+	'gallery' => ['lib/jquery-2.1.4.min','app','lib/waves','media'],
+	'stats'   => ['lib/jquery-2.1.4.min','app','lib/d3.min','lib/cal-heatmap.min','stats'],
+	'index'   => ['lib/jquery-2.1.4.min','app','lib/waves','lib/jquery-ui.min', 'index'],
+	'invite'  => ['lib/jquery-2.1.4.min','app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','invite'],
+	'root'    => ['lib/jquery-2.1.4.min','app','lib/waves','lib/jquery.ui.widget','lib/jquery.iframe-transport','lib/jquery.fileupload','lib/jquery-ui.min','lib/jquery.knob','lib/root.upload-init','lib/qr','root']
 ];
 
 include('exe/Minifier.php');
