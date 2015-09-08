@@ -1146,7 +1146,7 @@ var Media = (function(){
 		var List = function(e){
 			albums = e.albums, gallery = e.gallery;
 			Search('');
-			if (!e.note || !initial || albums = []) return [];
+			if (!e.note || !initial || albums == []) return [];
 			Note(e.note, function(h){
 				h.find('a.cancel')
 				 .css({display : 'block'})

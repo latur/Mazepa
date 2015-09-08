@@ -84,10 +84,10 @@ class Media extends Init {
 	 * Получить список последних публикаций (главная страница)
 	 * Возвращает список альбомов с обложкой и цветами картинок
 	 */ 
-	public function __PublicEvents() {
+	public function __PublicEvents($count = false) {
 		$last  = (int) @$_POST['last'];
 		$where = $last > 0 ? "where `mazepa_public`.`id` < $last" : "";
-		$count = (int) @$_POST['count'];
+		$count = $count ? $count : (int) @$_POST['count'];
 		if ($count == 0) $count = 5;
 		
 		// События

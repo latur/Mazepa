@@ -119,10 +119,12 @@ textarea {
 
 /* Главная страница */
 
-.main { padding: 20px; margin-bottom: 150px; overflow: hidden; }
+.main { padding: 20px 20px 50px 20px;  overflow: hidden; position: relative; }
+.main .more { bottom: 20px; left: 20px; position: absolute; }
 .indexpage { display: none; }
 .boxed { overflow: hidden; border-radius: 4px; box-shadow: 0 2px 15px rgba(0,0,0,0.15); margin: 20px 0; }
 .boxed:hover { box-shadow: 0 2px 17px rgba(0,0,0,0.25); }
+.boxed.item { opacity: 0 }
 
 .switch { line-height: 18px; background: #333; color: #eee; padding: 10px 20px; display: none; }
 .switch a { color: #eee; font-size: 1em; text-decoration: none; margin-right: 15px }

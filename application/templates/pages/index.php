@@ -9,7 +9,7 @@
 		<div class="feed">
 			<h2>Что посмотреть:</h2>
 			<div id="stream"></div>
-			<a class="more waves-effect waves-button waves-float mini">Далее</a>
+			<a class="more waves-effect waves-button waves-float">Показать ещё</a>
 		</div>
 		<? if ($this->user['level'] > 0){ ?>
 		<div class="swithed">

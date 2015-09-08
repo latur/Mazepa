@@ -66,7 +66,7 @@ $route->Add("POST", "/stats/([A-z\_]{4,64})", function($e){
 $route->Add("GET", "/", function($e){
 	$app = new Media();
 	$app->View('index', [
-		'events' => $app->__PublicEvents(),
+		'events' => $app->__PublicEvents(15),
 		'bookmarks' => $app->__MyBookmarks(),
 		'tags' => $app->__MyTags()
 	]);
