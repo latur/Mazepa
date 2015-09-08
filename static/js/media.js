@@ -110,7 +110,7 @@ $(function(){
 			$('title').html(title.join(' ∞ '));
 
 			var url = location.pathname.indexOf('/albums/') ? '/' : '/albums/';
-			url += Number(m.id).toString(32) + '/';
+			url += Number(m.id).toString(32) + '.' + m.secret + '/';
 			if (i || i === 0) url += imgs[i].id;
 			history.pushState(false, title.join(' ∞ '), url);
 		}

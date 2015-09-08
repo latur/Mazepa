@@ -15,7 +15,7 @@ var Media = (function(){
 		var a = {};
 		for (var i in albums){
 			if (albums[i].id == aid) {
-				albums[i].url = location.origin + '/albums/' + parseInt(albums[i].id).toString(32);
+				albums[i].url = location.origin + '/albums/' + parseInt(albums[i].id).toString(32) + '.' + albums[i].secret;
 				albums[i]['option'] = '';
 				return albums[i];
 			}
@@ -414,7 +414,7 @@ var Media = (function(){
 		}());
 
 		var Delete = function(aid){
-			var aid = aid || current.id;
+			var aid = (typeof(aid) == "object") ? current.id : aid;
 			console.log('Удаление альбома: ' + aid);
 			Library('AlbumDelete', {aid : aid}, function(e){
 				Reverse(e.message, e.reverse, Update);

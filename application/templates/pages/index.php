@@ -5,7 +5,7 @@
 		<a href="" class="animate s" data-act="add">Закладки/Отметки</a>
 	</div>
 	<? } ?>
-	<div class="main animate">
+	<div class="main animate indexpage">
 		<div class="feed">
 			<h2>Что посмотреть:</h2>
 			<div id="stream"></div>
@@ -51,8 +51,8 @@
 	<div class="bm">
 		<div class="album">
 			<span class="icon icon-{icon}"></span>
-			<h4><a class="animate" href="/albums/{id32}">{title}</a></h4>
-			<a class="animate" href="/albums/{id32}"><p>{desc}</p></a>
+			<h4><a class="animate" href="{url}">{title}</a></h4>
+			<a class="animate" href="{url}"><p>{desc}</p></a>
 			<small>Автор: <a class="animate" href="/{username}">{author} </a></small>
 			<a data-aid="{id}" class="animate delete"><span class="icon icon-cancel"></span></a>
 		</div>
@@ -67,7 +67,6 @@
 	<p>Чтобы сохранять альбомы в закладки, нажимайте на иконку <span class="icon icon-bookmark"></span> в правом верхнем углу альбома.</p> 
 	<p>Все сохранённые альбомы будут доступны здесь</p> 
 </div>
-
 
 <script>
 	var api = '/api/';

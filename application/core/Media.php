@@ -92,7 +92,7 @@ class Media extends Init {
 		
 		// События
 		$e = $this->db->query("select `mazepa_public`.`id`, 
-			/* Альбом */ `mazepa_albums`.`id` as `aid`, `mazepa_albums`.`title`, `mazepa_albums`.`desc`,
+			/* Альбом */ `mazepa_albums`.`id` as `aid`, `mazepa_albums`.`title`, `mazepa_albums`.`desc`, `mazepa_albums`.`secret`,
 			/* Автор */ `mazepa_userinfo`.`id` as `uid`, `mazepa_userinfo`.`name`, `mazepa_userinfo`.`username`
 			from `mazepa_public`
 			left join `mazepa_albums` on `mazepa_albums`.`id` = `mazepa_public`.`alb` 
@@ -124,7 +124,7 @@ class Media extends Init {
 	/**
 	 * Получить альбом со всеми фотографиями
 	 */ 
-	public function GetAlbum($url = false, $id = false) {
+	public function GetAlbum($url = false, $id = false, $secret = '') {
 		$aid = $id ? (int) $id : (int) base_convert(@$url, 32, 10);
 		if ($aid <= 0) return Init::Error(404);
 
@@ -135,8 +135,9 @@ class Media extends Init {
 		if (!$info) return Init::Error(404);
 
 		// Проверка приватности: ( Приват / По ссылке / Публична — 0/1/2  )
-		if ($info['owner'] != $this->user['id'] && $info['privacy'] == 0) {
-			return Init::Error(405);
+		if ($info['owner'] != $this->user['id']) {
+			if ($info['privacy'] == 0) return Init::Error(405);
+			if ($info['privacy'] == 1 && $info['secret'] != $secret) return Init::Error(405);
 		}
 		
 		// Фотографии альбома
@@ -231,7 +232,7 @@ class Media extends Init {
 	public function GalleryAlbums($id = false) {
 		if (!$id) $id = $this->gallery['id'];
 		// Список альбомов
-		$q = $this->db->query("select `mazepa_albums`.`id`, `mazepa_albums`.`title`, `mazepa_albums`.`desc` 
+		$q = $this->db->query("select `mazepa_albums`.`id`, `mazepa_albums`.`title`, `mazepa_albums`.`desc`, `mazepa_albums`.`secret` 
 			from `mazepa_albums` 
 			left join `mazepa_alb_gal` on `mazepa_albums`.`id` = `mazepa_alb_gal`.`aid` 
 			where `mazepa_alb_gal`.`gid` = '{$id}' and (`mazepa_albums`.`owner` = '{$this->user['id']}' or `mazepa_albums`.`privacy` != 0) 
@@ -271,7 +272,7 @@ class Media extends Init {
 	 * Страница: Альбом, Фотография
 	 */ 
 	public function Album($e) {
-		$album = $this->GetAlbum($e[1]);
+		$album = $this->GetAlbum($e[1], false, $e[2]);
 		$this->View('album', [
 			'title' => [$album['title'], $album['author']],
 			'media' => $album,

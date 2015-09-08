@@ -302,15 +302,15 @@ class Library extends Init {
 		if ($data[2] < 0 || $data[2] > 3) $data[2] = 1;
 		// Сохранение информации
 		if ($aid == 0){
-			$sql = "insert into `mazepa_albums` 
-				(`title`, `desc`, `privacy`, `owner`) 
-				values (?, ?, ?, {$this->user['id']})";
+			$secret = substr(sha1(rand() . uniqid()), 0, 8);
+			$e = $this->db->prepare("insert into `mazepa_albums` 
+				(`title`, `desc`, `privacy`, `owner`, `secret`) 
+				values (?, ?, ?, {$this->user['id']}, '{$secret}')");
 		} else {
-			$sql = "update `mazepa_albums` 
+			$e = $this->db->prepare("update `mazepa_albums` 
 				set `title` = ?, `desc` = ?, `privacy` = ?
-				where `owner` = '{$this->user['id']}' and `id` = '{$aid}'";
+				where `owner` = '{$this->user['id']}' and `id` = '{$aid}'");
 		}
-		$e = $this->db->prepare($sql);
 		$e->execute($data);
 		$media = $this->__Media();
 		$media['last'] = $aid > 0 ? $aid : $this->db->lastInsertId();

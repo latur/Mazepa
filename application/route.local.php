@@ -91,7 +91,7 @@ $route->Add("GET", "/login/?(.*)", function($e){
 
 
 // Альбом, Изображение
-$route->Add("GET", "/albums/([0-9a-z]{1,16})\.?([0-9a-z]{1,16})?/?([0-9]{1,16})?", function($e){
+$route->Add("GET", "/albums/([0-9a-z]{1,16})\.?([0-9a-z]{0,13})?/?([0-9]{1,16})?", function($e){
 	$app = new Media();
 	$app->Album($e);
 });

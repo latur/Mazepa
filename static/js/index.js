@@ -2,6 +2,13 @@ $(function(){
 	// События на главной странице сайта
 	if (!events || events.length == 0) return;
 	
+
+	// Трансформация данных альбома (URL)
+	var AlbumURL = function(e){
+		e.url = '/albums/' + Number(e.id).toString(32) + '.' + e.secret;
+		return e;
+	};
+
 	var loading = false;
 	var last = 0;
 	var AppendBlock = function(data) {
@@ -18,7 +25,7 @@ $(function(){
 		for (var i in data.events) {
 			var e = data.events[i];
 			last = e.id;
-			e.url = '/albums/' + Number(e.aid).toString(32) + '/';
+			e.url = '/albums/' + Number(e.aid).toString(32) + '.' + e.secret;
 			e.img = '<img src="'+ hard + data.covers[e.aid] +'" />';
 			e.pict = '<img src="/cache/'+e.uid+'x.jpg" />';
 			e.points = GetColors(e.aid, e.url);
@@ -44,8 +51,7 @@ $(function(){
 		}
 		for (var i in bookmarks) {
 			bookmarks[i].icon = 'bookmark';
-			bookmarks[i].id32 = Number(bookmarks[i].id).toString(32);
-			$('.bookmarks .list').append(Templates('bookmarkElement', bookmarks[i]));
+			$('.bookmarks .list').append(Templates('bookmarkElement', AlbumURL(bookmarks[i])));
 		}
 		$('.bookmarks .delete').click(function(){
 			var aid = $(this).data('aid');
@@ -72,8 +78,7 @@ $(function(){
 		}
 		for (var i in tags) {
 			tags[i].icon = 'camera';
-			tags[i].id32 = Number(tags[i].id).toString(32);
-			$('.tags .list').append(Templates('bookmarkElement', tags[i]));
+			$('.tags .list').append(Templates('bookmarkElement', AlbumURL(tags[i])));
 		}
 		$('.tags .delete').click(function(){
 			var aid = $(this).data('aid');
@@ -93,5 +98,8 @@ $(function(){
 	}());
 	
 	Waves.displayEffect();
+	
 	AppendBlock(events);
+
+	$('.indexpage').css({display : 'block'});
 });

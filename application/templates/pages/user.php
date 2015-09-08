@@ -10,7 +10,7 @@
 	<div class="e">
 		<? if ($owner['text'] != ''){ ?><h2><?=Text::Simple($owner['text'])?></h2><? } ?>
       	<? foreach($data['albums'] as $album){ ?>
-    	<a class="alb" href="/albums/<?=base_convert($album['id'], 10, 32)?>">
+    	<a class="alb" href="/albums/<?=base_convert($album['id'], 10, 32) . "." . $album['secret']?>">
     		<div class="img"><img class="animatelond" src="<?=MEDIA . ($album['cover']['src_small'] ? $album['cover']['src_small'] : $album['cover']['src_main'])?>"></div>
     		<h3 class="animate"><?=$album['title']?> <p><?=$album['desc']?></p></h3>
     	</a>
