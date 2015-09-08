@@ -262,7 +262,7 @@ html { background: #999; overflow: hidden }
   /* */
   .a-helper { position: fixed; z-index: 80; background: #F0F7FA; width: 350px; padding: 7px 15px; border-left: 4px solid #0056B4 } 
   .g-albums-dp { position: absolute; bottom: 0; top: 0; right: 0; left: 0; z-index: -5; background: rgba(165, 187, 255, 0.05); margin: 10px; border-radius: 5px; border: 2px dashed rgba(165, 187, 255, 0.2); }
-  .g-albums-empty { text-align: center; padding: 50px 0; }
+  .g-albums-empty { text-align: center; padding: 50px 0; display: none }
   .albumDrag .g-albums-dp { z-index: 50 !important; }
   .albumDrag .g-albums-dp.hover { background: rgba(165, 187, 255, 0.1); }
   /* */

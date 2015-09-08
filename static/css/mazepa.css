@@ -47,10 +47,12 @@ textarea {
 .note { padding: 10px 20px; border-radius: 3px; background: rgba(230, 245, 255, 0.90); box-shadow: 0px 0px 20px rgba(0,30,255,0.15); border-left: 5px solid #8499FF; }
 .note.visible { top: 15px; opacity: 1; }
 .note.remove  { top: -30px; opacity: 0; }
- .note p { float: left; width: 600px; padding: 5px 0; }
+ .note p { float: left; width: 565px; padding: 5px 0; }
  .note .control { float: right; }
   .note a { float: right; background: #FFF; }
-  .note a.cancel { margin-left: 15px; display: none }
+  .note a.cancel { margin-left: 10px; display: none }
+
+.key { border: 1px solid rgba(0,0,0,0.2); border-radius: 2px; font-family: monospace; padding: 0 3px 1px 3px; font-size: 0.9em; line-height: 1em; background: #fff; box-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
 
 /* Панель ссылок */
 

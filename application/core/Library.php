@@ -44,7 +44,8 @@ class Library extends Init {
 			order by `id` desc"); 
 		return [
 			'albums' => $albums->fetchAll(PDO::FETCH_ASSOC),
-			'gallery' => $gallery->fetchAll(PDO::FETCH_ASSOC)
+			'gallery' => $gallery->fetchAll(PDO::FETCH_ASSOC),
+			'note' => $this->Helper()
 		];
 	}
 
@@ -269,12 +270,8 @@ class Library extends Init {
 		$msg = "Альбом <b>«{$albuminfo['title']}»</b> удалён.";
 		if (count($ids) > 0 ) $msg .= " Фотографии альбома перемещены в корзину (".count($ids)."шт.)";
 
-		$albuminfo['title'] = $this->db->quote($albuminfo['title']);
-		$albuminfo['desc'] = $this->db->quote($albuminfo['desc']);
-		$sql = [
-			"update `mazepa_media` set `album` = '{$id}' where `owner` = '{$this->user['id']}' and `id` in (".implode(',', $ids).");",
-			"insert into `mazepa_albums` values (". implode(",", $albuminfo) .");"
-		];
+		$sql = [ "insert into `mazepa_albums` values (". implode(",", $this->AQuote($albuminfo)) .");" ];
+		if (count($ids) > 0) $sql[] = "update `mazepa_media` set `album` = '{$id}' where `owner` = '{$this->user['id']}' and `id` in (".implode(',', $ids).");";
 
 		// Удаление
 		$this->db->query("update `mazepa_media` set `album` = '0' where `owner` = '{$this->user['id']}' and `album` = '{$id}'");
@@ -582,7 +579,48 @@ class Library extends Init {
 		return [];
 	}
 
+
+	public function __HelperStop(){
+		$note = LOG . "notes/s{$this->user['id']}.json";
+		file_put_contents($note, json_encode(['show' => false]));
+		return [];
+	}
+
+
 	/*! --------------------------------------------------------------------- */
+
+	/**
+	 * Помогалка: случайный совет при старте:
+	 */
+	private function Helper(){
+		$helps = [
+			'Быстрый просмотр фотографии — выделить и нажать пробел',
+			'Удалять выделенные фотографии можно клавишами <span class="key">delete</span> или <span class="key">backspace</span>',
+			'Выделить все фотографии в альбоме — клавиша <span class="key">F</span>',
+			'Отменить выбор фотографий — клавиша <span class="key">Q</span>',
+			'Нажмите правой кнопкой мыши на альбоме или галерее слева для вызова контекстного меню',
+			'Нажмите правой кнопкой мыши на фотографии для вызова контекстного меню',
+			'Повернуть выделенные фотографии можно клавишами <span class="key">]</span> и <span class="key">[</span>',
+			'Выделить несколько фотографий в альбоме можно зажав клавишу <span class="key">Shift</span> или <span class="key">Cmd</span>'
+		];
+
+		shuffle($helps);
+		$note = LOG . "notes/s{$this->user['id']}.json";
+
+		if (file_exists($note)) {
+			$info = json_decode(file_get_contents($note));
+			if (!$info->show) return false;
+			$helpsMy = $info->helps;
+		} else {
+			$helpsMy = $helps;
+		}
+		
+		$help = $helpsMy[0];
+		$helpsMy = (count($helpsMy) > 1) ? array_slice($helpsMy, 1) : $helps;
+		file_put_contents($note, json_encode(['show' => true, 'helps' => $helpsMy]));
+		
+		return $help;
+	}
 
 	/**
 	 * Обработка массива db->quote

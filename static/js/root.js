@@ -1142,10 +1142,17 @@ var Media = (function(){
 		if (!draggable) $('.e.ui-draggable').draggable("disable");
 	}
 	// Обновление панели с запросом к серверу
-	function Update(e){
+	function Update(e, initial){
 		var List = function(e){
 			albums = e.albums, gallery = e.gallery;
 			Search('');
+			if (!e.note || !initial || albums = []) return [];
+			Note(e.note, function(h){
+				h.find('a.cancel')
+				 .css({display : 'block'})
+				 .click(function(){ Library('HelperStop'); })
+				 .html('Скрыть подсказки');
+			});
 		};
 		return e ? List(e) : Library('Media', {}, List);
 	}
@@ -1157,7 +1164,6 @@ var Media = (function(){
 		$('.new .U').click(Uploader.Open);
 		$('.new .A').click(Album.Create);
 		$('.new .G').click(Gallery.Create);
-		Context.Init('#list', ['AC', 'GC']);
 	}
 
 	// Отменялка действий
@@ -1172,8 +1178,9 @@ var Media = (function(){
 	};
 
 
-	Update();
+	Update(false, true);
 	Main();
+	Context.Init('#list', ['AC', 'GC']);
 	
 	$('#search input').keyup(function(){ Search( $(this).val() ); });
 	$('#left .ctrls span.k').mousedown(function(){ Album.LoadContent(-1); });

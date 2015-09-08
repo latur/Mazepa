@@ -236,7 +236,7 @@
 					<a class="delgal waves-effect waves-button waves-float mini">Удалить галерею</a>
 				</div>
 			</div>
-			<div class="g-albums"></div>
+			<div class="g-albums">Загрузка...</div>
 			<div class="g-albums-empty">В галерее нет ни одного альбома</div>
 		</div>
 		<div class="box qr">
@@ -299,5 +299,4 @@
 </div>
 
 <? /* [END] Шаблоны */ ?>
-
 <link href="/cache/@root.css" rel="stylesheet" type="text/css">
