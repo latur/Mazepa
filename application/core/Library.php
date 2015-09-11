@@ -101,11 +101,11 @@ class Library extends Init {
 		// Проверка авторства альбомов (from/to)
 
 		// Откуда перемещаем
-		$e = $this->db->query("select `mazepa_albums`.`title`, `mazepa_media`.`album` from `mazepa_media` 
-			left join `mazepa_albums` on `mazepa_albums`.`id` = `mazepa_media`.`album` 
-			where `mazepa_media`.`owner` = '{$this->user['id']}' and `mazepa_media`.`id` in ({$imgs}) limit 1");
+		$e = $this->db->query("select `mazepa_media`.`album`,`mazepa_albums`.* from `mazepa_media` 
+			left join `mazepa_albums` on `mazepa_albums`.`id` = `mazepa_media`.`album`
+			where `mazepa_media`.`owner` = '{$this->user['id']}' and `mazepa_media`.`id` in ({$imgs}) limit 1 ");
 		$fromAlb = @$e->fetch(PDO::FETCH_ASSOC);
-		if (!$fromAlb || !@$fromAlb['album']) return ['haha' => 2];
+		if (!$fromAlb) return ['haha' => 2];
 		
 		if ($fromAlb['album'] == -1) $msg = "Фотографии перемещены из корзины";
 		else if ($fromAlb['album'] == 0 ) $msg = "Фотографии перемещены из папки «Импорт»";
@@ -146,7 +146,7 @@ class Library extends Init {
 			$sql = "select `mazepa_media`.`id` from `mazepa_media` 
 				left join `mazepa_exifo` on `mazepa_exifo`.`id` = `mazepa_media`.`id` 
 				where `mazepa_media`.`owner` = '{$this->user['id']}' and `mazepa_media`.`album` = '{$aid}' 
-				order by `mazepa_exifo`.`Date/Time Original`, `mazepa_exifo`.`Modify Date`, `mazepa_exifo`.`File Access Date/Time`";
+				order by `mazepa_exifo`.`Modify Date`, `mazepa_exifo`.`Date/Time Original`";
 		}
 		if($by == 'name'){
 			$sql = "select `id` from `mazepa_media` 
@@ -536,6 +536,19 @@ class Library extends Init {
 		$userInfo['albums'] = array_map(function($e){ return (int) $e['id']; }, $albums->fetchAll(PDO::FETCH_ASSOC));
 		$userInfo['covers'] = $this->AlbumCovers($userInfo['albums']);
 		return $userInfo;
+	}
+
+	public function __SocialRemove(){
+		$sid = @$_POST['sid'];
+		// Текущие привязанные
+		$e = $this->db->query("select * from `mazepa_social` where `owner` = '{$this->user['id']}' order by `date` desc");
+		$social = $e->fetchAll(PDO::FETCH_ASSOC);
+		if (count($social) > 1) {
+			foreach ($social as $s) {
+				if ($s['sid'] == $sid) $this->db->query("delete from `mazepa_social` where `sid` = '{$s['sid']}'");
+			}
+		}
+		return [];
 	}
 
 	/**
