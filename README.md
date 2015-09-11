@@ -2,7 +2,7 @@
 
 Система управления веб-фотогалереями. 
 
-![Как это выглядит](https://raw.githubusercontent.com/latur/Mazepa/static/img/demo.jpg)
+![Как это выглядит](https://raw.githubusercontent.com/latur/Mazepa/master/static/img/demo.jpg)
 
 Разработана с использованием:
 
