@@ -92,6 +92,7 @@ $(function(){
 
 	// Colums
 	window.Columes = function(fix){
+		if (level != 0) return ;
 		var wmax = 390,  margin = 20;
 		var space = $(window).width(), inline = 0;
 		while (space > 0) space -= (wmax + margin), inline++;

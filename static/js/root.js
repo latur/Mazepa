@@ -933,6 +933,11 @@ var Media = (function(){
 
 				// Привязка соц-сетей
 				$('.pfl .ss a').click(OAuth);
+				// Отвязка соц-сетей
+				$('.pfl .social .del').click(function(e){
+					Library('SocialRemove', {sid : $(this).data('sid')});
+					$(this).parent().remove();
+				});
 
 				// Загрузка  обложки
 				$('.pfl .c').click(function(){
