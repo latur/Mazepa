@@ -7,7 +7,7 @@ if (@$_POST['install']) {
 	$tpl = file_get_contents($src);
 	
 	// Создание директорий
-	exec("mkdir $e/media $e/log/archive $e/log/notes $e/log/reverse $e/cache/pict");
+	exec("mkdir $e/media $e/log $e/log/archive $e/log/notes $e/log/reverse $e/cache/pict");
 
 	// Проверка папок на запись
 	if (!is_writable("$e/cache")) fine("Директория $e/cache недоступна для записи");
