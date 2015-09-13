@@ -1,22 +1,10 @@
 <div id="login">
-	<div id="buttons">
-		<div style="padding: 70px 0 0 20px;">
-			<h4>Всем плевать. Но кому-то интересно</h4>
-			<h5>Войти с помощью</h5>
-			<div class="list">
-	    		<div class="ss">
-					<a class="waves-effect waves-button waves-float" data-id="vk"><span class="icon icon-vkontakte-rect" ></span> ВКонтакте</a>
-					<a class="waves-effect waves-button waves-float" data-id="fb"><span class="icon icon-facebook-rect"  ></span> Facebook</a>
-					<a class="waves-effect waves-button waves-float" data-id="gp"><span class="icon icon-googleplus-rect"></span> Google+</a>
-				</div>
-			</div>
-		</div>
-	</div>
+<h2>Вход в систему:</h1>
+<div id="me">
+	<form action="/login" method="post">
+	<p><input type="text" name="login" class="form-c" placeholder="Login" /></p>
+	<p><input type="text" name="pwd" class="form-c" placeholder="Password" /></p>
+	<button type="submit" class="ok waves-effect waves-button waves-float">Войти</button>
+	</form>
 </div>
-<script >
-$(function(){
-	$('.list .ss a').click(OAuth);
-	Waves.displayEffect();
-});
-</script >
-
+</div>
