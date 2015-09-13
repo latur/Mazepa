@@ -115,7 +115,7 @@ $( document ).ready(function() {
 		$.post('', data, function(res){
 			if (res.e != "0") return $('.res').html('<p>' + res.e + '</p>');
 			$('.res').html('<p class="ok">Установка прошла успешно!</p>');
-			setTimeout(function(){ location.reload() }, 5000);
+			setTimeout(function(){ location.href = '/'; }, 4000);
 		}, "json");
 	});
 });
