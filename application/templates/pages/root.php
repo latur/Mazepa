@@ -245,35 +245,27 @@
 </div>
 <div class="template" id="profileContent">
 	<div class="pfl frame">
+		<div class="status"><i></i></div>
 		<div class="box">
 			<div class="g-albums-dp"></div>
 			<form id="cover-upload" method="post" action="/upload" enctype="multipart/form-data"><input type="file" name="cover" multiple /></form>
 			<div class="c">
 				{cover}
-				<div class="status"><i></i></div>
 				<div class="h"><span>Перетащите сюда файл для загрузки обложки к вашей персональной странице</span></div>
 			</div>
 			<div class="s">
 				<div class="lt">
-					<p>Ваше полное имя, отображаемое на странице</p>
-					<input class="form-c" value="{name}" placeholder="Полное имя"/>
-					<p>Логин: ваше краткое имя — URL адрес персональной страницы</p>
-					<p class="url">
-						<span>.HOST</span>
-						<input class="form-c" value="{username}" placeholder="Логин"/>
-					</p>
-					<p>Подпись</p>
-					<textarea class="form-c" rows="3" placeholder="Будет отображаться под вашим именем">{text}</textarea>
+					<form id="pict-upload" method="post" action="/upload" enctype="multipart/form-data"><input type="file" name="pict" multiple /></form>
+					<div class="cpict">
+						{pict}
+						<div class="h"><span>Аватарка</span></div>
+					</div>
 				</div>
 				<div class="rt">
-					<p>Привязанные аккаунты для входа на Мазепу</p>
-					<div class="social">{insocial}</div>
-					<p>Привязать аккаунт</p>
-					<div class="ss">
-						<a class="waves-effect waves-button waves-float" href="#" data-id="vk"><span class="icon icon-vkontakte-rect" ></span> ВКонтакте</a>
-						<a class="waves-effect waves-button waves-float" href="#" data-id="fb"><span class="icon icon-facebook-rect"  ></span> Facebook</a>
-						<a class="waves-effect waves-button waves-float" href="#" data-id="gp"><span class="icon icon-googleplus-rect"></span> Google+</a>
-		    		</div>
+					<p>Ваше полное имя, отображаемое на странице</p>
+					<input class="form-c" value="{name}" placeholder="Полное имя"/>
+					<p>Подпись</p>
+					<textarea class="form-c" rows="3" placeholder="Будет отображаться под вашим именем">{text}</textarea>
 				</div>
 			</div>
 			<div class="m"></div>

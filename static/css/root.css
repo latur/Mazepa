@@ -208,11 +208,19 @@ html { background: #999; overflow: hidden }
   .pfl .c img { float: left }
   .pfl .c .h { position: absolute; top:10px;left:10px;right:10px;bottom:10px; border: 1px solid rgba(255,255,255,0.3); text-align: center; line-height: 100%; }
   .pfl .c .h > span { position: absolute; left:10px;right:10px; top:50%; color: #FFF; margin-top: -10px; text-shadow: 0 -1px 1px rgba(0,0,0,0.4) }
+
+ .pfl .cpict {}
+ .pfl .cpict { margin-bottom: 10px; position: relative; overflow: hidden; cursor: pointer; height: 150px; width: 150px; background: #555; border-radius: 50%; }
+  .pfl .cpict img { float: left }
+  .pfl .cpict .h { position: absolute; top:10px;left:10px;right:10px;bottom:10px; border: 1px solid rgba(255,255,255,0.3); text-align: center; line-height: 100%; border-radius: 50%; }
+  .pfl .cpict .h > span { position: absolute; left:10px;right:10px; top:50%; color: #FFF; margin-top: -10px; text-shadow: 0 -1px 1px rgba(0,0,0,0.4) }
+
+
  /* ## Settings */
  .pfl .s {}
- .pfl .s { overflow: hidden; margin: 10px 0; padding: 10px 0; border-top: 1px dashed #eee; border-bottom: 1px dashed #eee; }
-  .pfl .s .rt { padding-left: 5px; padding-bottom: 5px; }
-  .pfl .s .lt { padding-right: 5px; }
+ .pfl .s { overflow: hidden; margin: 10px 0; padding: 10px 0; border-top: 1px dashed #eee; border-bottom: 1px dashed #eee; position: relative; }
+  .pfl .s .rt { position: absolute; left: 205px; right: 0px; width: auto; }
+  .pfl .s .lt { padding-right: 5px; width: 200px; }
   .pfl .s input { margin-bottom: 10px; }
   .pfl .s p { margin-bottom: 5px; }
   .pfl .s .url { position: relative; }
@@ -227,7 +235,7 @@ html { background: #999; overflow: hidden }
   .pfl .es:first-child .del { display: none }
   .pfl .status { float: right; width: 100%; height: 6px; margin: 0px 0; position: absolute }
   .pfl .status i { position: absolute; left: 0; height: 6px; width: 0; background: rgba(0, 0, 0, 0.5); }
-  .pfl #cover-upload { display: none; }
+  .pfl form { display: none; }
   .social .es p { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
  /* ## Profile medialist */
  .pfl .m {}

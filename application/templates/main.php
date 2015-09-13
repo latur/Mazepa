@@ -9,29 +9,16 @@
 </head>
 <body>
 	<div id="main" class="">
-		<? $panel = @$data['media'] || @$data['g'] ? 'media.panel' : 'panel'; ?>
-		<? include "application/templates/include/{$panel}.php"; ?>
+		<? if (@$data['media'] || @$data['g']) include "application/templates/include/media.panel.php"; ?>
+		<? if (@$data['panel']) include "application/templates/include/panel.php"; ?>
 		<? include "application/templates/pages/{$content}.php"; ?>
 	</div>
 	
 	<div id="footer">
-		<span>Игорь Вячеславович</span><span><a href="mailto:admin@masepa.us">связь</a></span><span><a href="//<?=HOST?>/about">о сайте</a></span>
+		<span>Mazepa</span><span><a href="https://github.com/latur">Igor V.</a></span><span><a href="//<?=HOST?>/login">Медиатека</a></span>
 	</div>
 
-	<? if ($this->user['level'] == 0){ ?>
-	<div class="template" id="loginModal">
-		<div id="buttons">
-			<h4>Войти с помощью</h4>
-			<div class="list">
-				<div class="ss">
-					<a class="waves-effect waves-button waves-float" data-id="vk"><span class="icon icon-vkontakte-rect" ></span> ВКонтакте</a>
-					<a class="waves-effect waves-button waves-float" data-id="fb"><span class="icon icon-facebook-rect"  ></span> Facebook</a>
-					<a class="waves-effect waves-button waves-float" data-id="gp"><span class="icon icon-googleplus-rect"></span> Google+</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<? } else { ?>
+	<? if ($this->user['level'] > 0){ ?>
 	<div class="template" id="noteBlock">
 		<div class="note animate" id="{id}">
 			<p>{text}</p>

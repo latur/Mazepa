@@ -71,7 +71,7 @@ textarea {
 
 .media .profile { text-decoration: none; text-align: center; line-height: 49px; height: 50px; font-weight: 900; text-shadow: 0 1px 2px #ddd; }
 .media .profile { position: absolute; left: 0; top: 0; }
-.media .profile .avatar { width: 40px; height: 40px; border-radius: 20px; position: relative; overflow: hidden; margin: 5px 8px; display: block; }
+.media .profile .avatar { width: 40px; height: 40px; border-radius: 20px; position: relative; overflow: hidden; margin: 5px 8px; display: block; background: #9A9A9A; }
 .media .profile .avatar:after { border-radius: 50%; }
 .media .profile .avatar img { width: 100%; position: relative; z-index: 10 }  
 .media .name { padding-left: 50px; }
@@ -108,6 +108,7 @@ textarea {
 
 #main { background: #fff; overflow: hidden; }
 #footer { padding: 12px 15px; font-size: 11px; color: #777;	}
+#footer a { text-decoration: none; }
 #footer span:not(:first-child):before { content: '•'; margin: 0 5px; }
 
 #buttons h4, #buttons h5 { margin: 7px 0; font-weight: 200; }
@@ -234,4 +235,10 @@ textarea {
  #in p { text-align: left; padding: 2px 0; }
  #in .guest-img{width:50px;height:50px;border-radius:3px;overflow:hidden;float:left;background-size:100%;margin-right:15px;background-color: #333;}
  #in .myname{margin:auto;line-height:50px}
+
+/* Страница входа в систему */
+#login { margin: 100px auto; width: 450px; }
+#login h1, #login h2 { margin: 15px 0; font-weight: 100 }
+#login h1 { margin-bottom: 25px; }
+#login p { margin: 7px 0; line-height: 20px; }
 

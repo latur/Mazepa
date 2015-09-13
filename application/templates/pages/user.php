@@ -1,9 +1,12 @@
-<? $owner = $data['owner']; ?>
-<div class="page u">
+<?
+	$owner = $data['owner'];
+	$owner['image'] = '/cache/pict/1w.jpg';
+?>
+<div class="u">
 	<div class="cover">
 		<? if ($owner['cover']){ ?><img src="<?= MEDIA . $owner['cover']?>/cover_large.jpg" /><? } ?>
 		<div class="name">
-			<div class="pic" style="background-image:url('//<?=$owner['image']?>')"></div>
+			<div class="pic" style="background-image:url('<?=$owner['image']?>')"></div>
 			<h1><?=$owner['name']?></h1>
 		</div>
 	</div>

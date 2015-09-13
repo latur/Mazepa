@@ -1,5 +1,3 @@
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -36,6 +34,7 @@ CREATE TABLE `mazepa_albums` (
   `desc` text,
   `privacy` int(1) DEFAULT '2' COMMENT 'Приват / По ссылке / Публична — 0/1/2 ',
   `order` int(11) DEFAULT NULL,
+  `secret` varchar(13) DEFAULT '' COMMENT 'Секретный код альбома',
   PRIMARY KEY (`id`),
   KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -318,6 +317,15 @@ CREATE TABLE `mazepa_userinfo` (
   KEY `username` (`username`(255))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `mazepa_userinfo` WRITE;
+/*!40000 ALTER TABLE `mazepa_userinfo` DISABLE KEYS */;
+
+INSERT INTO `mazepa_userinfo` (`id`, `level`, `name`, `text`, `cover`, `username`, `ip`, `agent`, `date`, `inviter`)
+VALUES
+	(1,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `mazepa_userinfo` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 

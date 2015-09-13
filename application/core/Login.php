@@ -18,6 +18,9 @@ class Login extends Init {
 		if (@$_GET['code']) {
 			$this->OAuth(Social::Init());
 		}
+		if (@$_POST['pwd']) {
+			$this->LoginAuth();
+		}
 	}
 
 	public function OAuth($info) {
@@ -85,6 +88,20 @@ class Login extends Init {
 			}
 		}
 		$this->db->commit();
+	}
+	
+	/*
+	 * Вход по логину и паролю 
+	 */
+	private function LoginAuth() {
+		if ($this->user['level'] > 0) return true;
+		if ( @$_POST['login'] === USER && sha1(@$_POST['pwd']) === PASS ) {
+			$this->user = ['id' => 1];
+			$this->Rewrite();
+			header("Location: /root");
+			exit;
+		}
+		return false;
 	}
 	
 

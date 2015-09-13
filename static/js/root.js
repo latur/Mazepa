@@ -441,7 +441,7 @@ var Media = (function(){
 			$('#ainfo').html( Templates('editAlbumInfo', current) );
 			$('[name="privacy"]').val(current.privacy);
 			$('.e').removeClass('sel exist');
-			$('.e[data-id="'+aid+'"]').addClass('sel');
+			$('.album[data-id="'+aid+'"]').addClass('sel');
 			Img.Clear();
 			$('#DeleteAlbum').click(Delete);
 			$('#ViewAlbum').click(Go);
@@ -695,7 +695,7 @@ var Media = (function(){
 				$('.gallery').animate({ marginTop: '100%', opacity : 0 })
 			});
 			$('.e').removeClass('sel exist');
-			$('.e[data-id="'+ID+'"]').addClass('sel');
+			$('.gall[data-id="'+ID+'"]').addClass('sel');
 			return true;
 		};
 		var AlbumsCounter = function(){
@@ -834,6 +834,10 @@ var Media = (function(){
 		return function(){
 			console.log('Загрузка информации профиля ...');
 			Library('Profile', {}, function(data){
+				if (data.name == null) data.name = '';
+				if (data.text == null) data.text = '';
+				
+				console.log(data);
 				// Внешние профили
 				data.insocial = '';
 				var sUrl = {
@@ -857,13 +861,14 @@ var Media = (function(){
 				} else {
 					data.cover = '';
 				}
+				data.pict = '<img width="100%" src="/cache/pict/1w.jpg">';
 				
 				// Вставка шаблона
 				$('#right').html( Templates('profileContent', data) );
 				$('#media').addClass('HideInfo');
 
 				var ShowQR = function(uname) {
-					data.url = location.protocol + '//' + host + '/' + (uname || data.username);
+					data.url = location.protocol + '//' + host + '/';
 					data.qr = '<img width="100%" src="' + (QRCode.generatePNG(data.url, {'modulesize' : 10})) + '">';
 					$('#right .pfl .qr').html( Templates('contentQR', data) );
 				};
@@ -964,11 +969,40 @@ var Media = (function(){
 						info = data; 
 					},
 				    stop : function(e){
-				        var src = hard + info.result + 'cover_large.jpg';
+				        var src = hard + info.result + 'cover_medium.jpg';
 						$('.pfl .c img').attr('src', src + '?' + Math.random());
 						$('.pfl .status i').css({ width: 0 });
 					}
 				});
+				$('.pfl .cpict').click(function(){
+				    $('#pict-upload').find('input').click();
+				});
+				$('#pict-upload').fileupload({
+					dropZone: $('.pfl .cpict'),
+				    add: function (e, data) {
+				        var tpl = $('<div/>');
+				        tpl.find('p').text(data.files[0].name).append('<i>' + data.files[0].size + '</i>');
+				        data.context = tpl.appendTo(ul);
+				        tpl.find('input').knob();
+				        tpl.find('span').click(function(){
+				            if(tpl.hasClass('working')) jqXHR.abort();
+				            tpl.fadeOut(tpl.remove);
+				        });
+				        // Automatically upload the file once it is added to the queue
+				        var jqXHR = data.submit();
+				    },
+					progress: function(e, data){ 
+						var progress = parseInt(data.loaded / data.total * 100, 10);
+						$('.pfl .status i').css({ width: progress + '%' });
+						info = data; 
+					},
+				    stop : function(e){
+				        var src = '/cache/pict/1w.jpg';
+						$('.pfl .cpict img').attr('src', src + '?' + Math.random());
+						$('.pfl .status i').css({ width: 0 });
+					}
+				});
+
 				// Prevent the default action when a file is dropped on the window
 				$(document).on('drop dragover', function (e) {
 				    e.preventDefault();
@@ -1208,11 +1242,11 @@ var Media = (function(){
 		    Album.View.Close();
 	    }
 
-	    if (e.keyCode == 32) Album.View.Space(); // Пробел
-	    if (e.keyCode == 38) Album.View.Up();    // ^
-	    if (e.keyCode == 37) Album.View.Prev();  // <
-	    if (e.keyCode == 39) Album.View.Next();  // >
-	    if (e.keyCode == 40) Album.View.Down();  // .
+	    if (e.keyCode == 32) Album.View.Space();  // Пробел
+	    if (e.keyCode == 38) Album.View.Up();     // ^
+	    if (e.keyCode == 37) Album.View.Prev();   // <
+	    if (e.keyCode == 39) Album.View.Next();   // >
+	    if (e.keyCode == 40) Album.View.Down();   // .
 		if (e.keyCode == 70) Album.Img.Select();  // F - выьрать всё
 		if (e.keyCode == 81) Album.Img.DSelect(); // Q - выбрать ничего
 	    if (e.keyCode == 219) Album.RotateImages('left');  // [
