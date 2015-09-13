@@ -4,6 +4,23 @@ if [[ "$1" != "" ]]; then UNAME="$1"; else UNAME="developer"; fi;
 if [[ "$2" != "" ]]; then SITENAME="$2"; else SITENAME="sitename.com"; fi;
 
 # ---------------------------------------------------------------------------- #
+
+echo -e "\e[97mУстановка jpegoptim exiftool imagemagick"
+apt-get install git jpegoptim exiftool imagemagick
+
+echo -e "\e[97mСоздание нового пользователя $UNAME"
+useradd $UNAME -m -G www-data
+
+echo -e "\e[97mКопирование файлов"
+cd /home/$UNAME/ && mkdir logs www
+git clone https://github.com/latur/Mazepa.git www
+
+echo -e "\e[97mПрава доступа"
+find /home/$UNAME/www/ -type d -exec chmod 770 {} +
+find /home/$UNAME/www/ -type f -exec chmod 660 {} +
+chown -R $UNAME:www-data /home/$UNAME/www/
+
+# ---------------------------------------------------------------------------- #
 echo -e "\e[97mСоздание пользователя и таблицы в базе данных:"
 
 echo -e "\e[31mВведите имя базы данных (по умолчанию mazepadb):\e[39m"
@@ -30,23 +47,6 @@ mysql -u root -p < /tmp/insert.sql
 
 # ---------------------------------------------------------------------------- #
 
-echo -e "\e[97mУстановка jpegoptim exiftool imagemagick"
-apt-get install git jpegoptim exiftool imagemagick
-
-echo -e "\e[97mСоздание нового пользователя $UNAME"
-useradd $UNAME -m -G www-data
-
-echo -e "\e[97mКопирование файлов"
-cd /home/$UNAME/ && mkdir logs www
-git clone https://github.com/latur/Mazepa.git www
-
-echo -e "\e[97mПрава доступа"
-find /home/$UNAME/www/ -type d -exec chmod 770 {} +
-find /home/$UNAME/www/ -type f -exec chmod 660 {} +
-chown -R $UNAME:www-data /home/$UNAME/www/
-
-# ---------------------------------------------------------------------------- #
-
 echo -e "\e[97mНастройка Nginx"
 
 echo -e "> /etc/nginx/nginx.conf"
@@ -60,3 +60,5 @@ curl -s https://gist.githubusercontent.com/latur/446c68616d480a56bb25/raw/30c882
 
 echo -e "Запуск Nginx"
 /etc/init.d/nginx restart
+
+sensible-browser "http://localhost"
