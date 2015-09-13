@@ -7,7 +7,7 @@ if (@$_POST['install']) {
 	$tpl = file_get_contents($src);
 	
 	// Создание директорий
-	exec("mkdir $e/media $e/log $e/log/archive $e/log/notes $e/log/reverse $e/cache/pict");
+	exec("mkdir $e/media $e/log/archive $e/log/notes $e/log/reverse $e/cache/pict");
 
 	// Проверка папок на запись
 	if (!is_writable("$e/cache")) fine("Директория $e/cache недоступна для записи");
@@ -57,7 +57,7 @@ if (@$_POST['install']) {
 	
 	// Если всё прошло гладко, уделяем установочный файл
 	exec("mv $e/@index.php $e/index.php");
-	exec("rm -f $e/@dump.sql $src");
+	exec("rm -f $e/@dump.sql $src $e/install.php");
 	fine( "0" );
 	exit;
 }
@@ -89,9 +89,9 @@ if (@$_POST['install']) {
 	</div>
 	<h2>База данных:</h1>
 	<div id="db">
-		<p><input type="text" name="dbname" class="form-c" placeholder="DB Name" /></p>
-		<p><input type="text" name="dbuname" class="form-c" placeholder="Username" /></p>
-		<p><input type="text" name="dbpass" class="form-c" placeholder="Password" /></p>
+		<p><input type="text" name="dbname" value="" class="form-c" placeholder="DB Name" /></p>
+		<p><input type="text" name="dbuname" value="" class="form-c" placeholder="Username" /></p>
+		<p><input type="text" name="dbpass" value="" class="form-c" placeholder="Password" /></p>
 	</div>
 	<h2>Логин и пароль для входа в веб-интерфейс:</h1>
 	<div id="me">
