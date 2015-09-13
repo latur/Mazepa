@@ -5,14 +5,16 @@ if (@$_POST['install']) {
 	$e = __DIR__;
 	$src = "$e/@config.example.php";
 	$tpl = file_get_contents($src);
+	
+	// Создание директорий
+	exec("mkdir $e/media $e/log/archive $e/log/notes $e/log/reverse $e/cache/pict");
 
 	// Проверка папок на запись
 	if (!is_writable("$e/cache")) fine("Директория $e/cache недоступна для записи");
-	if (!is_writable("$e/log")) fine("Директория $e/log недоступна для записи");
+	if (!is_writable("$e/log"))   fine("Директория $e/log недоступна для записи");
 	if (!is_writable("$e/media")) fine("Директория $e/media недоступна для записи");
 
 	// Проверка соединения с БД
-	// tmazepa wpuser wpuser 
 	$dbname  = @$_POST['dbname'];
 	$dbuname = @$_POST['dbuname'];
 	$dbpass  = @$_POST['dbpass'];
@@ -20,7 +22,7 @@ if (@$_POST['install']) {
 		$db = new PDO('mysql:host=localhost;port=3306;dbname=' . $dbname . ';charset=UTF8', $dbuname, $dbpass);
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		// Импорт sql
-		$go = $db->exec( file_get_contents($e . '/dump.sql') );
+		$go = $db->exec( file_get_contents($e . '/@dump.sql') );
 		if ($go !== 0) fine( "Ошибка импорта dump.sql" );
 	} catch (PDOException $e) {
 		fine( $e->getMessage() );
@@ -71,10 +73,10 @@ if (@$_POST['install']) {
 	<link href="static/css/waves.css" rel="stylesheet" media="all" />	
 	<style>
 	html { background: #fdfdfd; }
-	.res p { display: block; margin-bottom: 20px; border: 1px solid rgba(50,0,0,0.3); padding: 20px 15px; }
+	.res p { display: block; margin-bottom: 20px; border: 1px solid rgba(190,0,0,0.5); padding: 20px 15px; }
 	#me { margin-bottom: 10px; }
 	.code { font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; padding: 2px 5px; background: #efefef; border-radius: 3px; }
-	p.ok {  border: 1px solid rgba(0,50,0,0.3); }
+	p.ok {  border: 1px solid rgba(0,190,0,0.5); }
 	</style>
 </head>
 <body>
@@ -102,6 +104,7 @@ if (@$_POST['install']) {
 <script src="static/js/lib/jquery-2.1.4.min.js"></script>
 <script>
 $( document ).ready(function() {
+	$('[name="site"]').val( location.hostname );
 	$('.ok').click(function(){
 		var data = { 'install' : true };
 		$('p > input').map(function(){
