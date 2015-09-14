@@ -124,15 +124,6 @@
 		<a id="DeleteAlbum" class="select waves-effect waves-button waves-float mini">Удалить</a>
 	</p>
 	<hr />
-	<div class="tags">
-		<p>Отметки: </p>
-		<div class="list"></div>
-		<div class="tagsinput">
-			<input type="text" class="form-c" placeholder="Начните писать имя друга" />
-			<div class="friendsbox"> <div class="l">Загрузка</div> </div>
-		</div>
-	</div>
-	<hr />
 	<div class="qr">{qr}</div>
 </div>
 <div class="template" id="imageColors">

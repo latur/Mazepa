@@ -527,62 +527,6 @@ var Media = (function(){
 					}, 15);
 				}
 			});
-			
-			
-			// Метки альбома
-			(function(){
-				var friends = false; 
-				var v = $('.tagsinput input');
-				
-				var Added = function(){
-					var added = [];
-					$('.tags .list .f').each(function(){ added.push( $(this).data('sid') ) });
-					return added;
-				};
-				var AddTag = function(info) {
-					$('.tags .list').append( Templates('myFriend', info) );
-					$('.tags .list .f a').click(function(){
-						var sid = $(this).data('sid');
-						Library('AlbumTag', { aid : current.id, act : 'remove', sid : sid });
-						$('.list [data-sid="'+sid+'"]').fadeOut(200, function(){ $(this).remove() });
-					});
-				};
-
-				var TagSearch = function(){
-					var str = v.val().toUpperCase();
-					if (str == '') return $('.friendsbox').fadeOut();
-					if (!friends ) return;
-
-					var html = '';
-					for (var i in friends) {
-						if (friends[i].name.toUpperCase().indexOf(str) != -1 && Added().indexOf(friends[i].sid) == -1) {
-							friends[i].i = i;
-							html += Templates('myFriend', friends[i]);
-						}
-					}
-					html = html == '' ? '<div class="l">Не найдено</div>' : html;
-					$('.friendsbox').html(html).fadeIn();
-					$('.friendsbox .f').click(function(){
-						var info = friends[$(this).data('i')];
-						Library('AlbumTag', { aid : current.id, act: 'add', sid : info.sid });
-						AddTag( info );
-						v.val('');
-					});
-				};
-
-				for (var i in tags) AddTag(tags[i]);
-
-				v.focus(function(){
-					if (friends) return TagSearch();
-					Library('MyFriends', {}, function(ret){ friends = ret.friends; });
-				});
-				v.focusout(function(){
-					$('.friendsbox').fadeOut();
-				});
-				v.keyup(TagSearch);
-			}());
-			
-			//Sortable(  );
 		};
 
 		function SaveAlbumData(data, newalbum){
@@ -1014,10 +958,7 @@ var Media = (function(){
 				// Внесение изменений
 				$('.pfl input, .pfl textarea').keyup(function(){
 					Stack(function(){
-						var data = [];
-						$('.pfl input, .pfl textarea').each(function(){
-							data.push($(this).val());
-						});
+						var data = [ $('.pfl input.form-c').val(), '', $('.pfl textarea.form-c').val() ];
 						Library('ProfileInfo', {data : data}, function(res){
 							ShowQR(res.username);
 						});

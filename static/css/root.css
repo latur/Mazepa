@@ -181,8 +181,8 @@ html { background: #999; overflow: hidden }
    #thumb img { float: left; width: 100% }
   #meta { font-size: 11px; line-height: 16px; margin: 10px 0 }
    #meta p { overflow: hidden }
-   #meta p b { width: 125px; float: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-   #meta p span { color: #444; width: 144px; float: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+   #meta p b { width: 110px; float: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+   #meta p span { color: #444; width: 145px; float: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
  /* ### Multiply images selected */
  #multi { width: 100%; }
   .mis .r { background: rgba(255,255,255,0.8); border-bottom: 1px solid #E6E6E6; height: 36px; line-height: 36px; font-size: 1.0em; padding: 0 10px; }
@@ -190,7 +190,7 @@ html { background: #999; overflow: hidden }
   .mis .th img { width: 50px; height: 50px; float: left; border: 2px solid #35ABFF; margin: 2px; }
   .mis .th.p40 img { width: 25px; height: 25px; border: 1px solid #35ABFF; margin: 1px; }
   .mis .place { width: 100%; } 
-  .mis .c { padding: 12px 60px; } 
+  .mis .c { padding: 12px 55px; } 
   .mis .c a > span { float: left; width: 30px; } 
 /* [END] Right panel */
 
