@@ -21,8 +21,8 @@
 Команды выполняются от `sudo`. Здесь во второй строчке `batman` — имя нового пользователя, `bat-site.com` — имя сайта. Вписать свои, разумеется:
 
 ```bash
-curl -s https://mazepa.us/exe/ubuntu-install.sh > install.sh && chmod +x install.sh
-./install.sh batman bat-site.com
+curl -s https://mazepa.us/exe/linux-install.sh > go.sh && chmod +x go.sh
+./go.sh batman bat-site.com
 ```
 
 ### Пошаговая установка
@@ -62,6 +62,92 @@ mysql -u root -p < /tmp/insert.sql
 ```
 
 Если вы используете **PhpMyAdmin** или иной инструмент работы с **Mysql**, можете воспользоваться им.
+
+Конфигурация nginx  `/etc/nginx/nginx.conf`:
+
+```
+user www-data;
+worker_processes 24;
+worker_rlimit_nofile 200000;
+pid /run/nginx.pid;
+
+events {
+  worker_connections 4000;
+  use epoll;
+  multi_accept on;
+}
+
+http {
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 25;
+  keepalive_requests 1000;
+  types_hash_max_size 2048;
+
+  log_format ingvar '$remote_addr [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent"';
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  reset_timedout_connection on;
+  client_max_body_size 80M;
+
+  error_log /var/log/nginx/error.log error;
+  access_log off;
+
+  gzip on;
+  gzip_disable    "msie6";
+  gzip_min_length 1000;
+  gzip_proxied    expired no-cache no-store private auth;
+  gzip_types      text/plain application/xml text/css application/javascript;
+
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*.conf;
+}
+```
+
+Конфигурация `/etc/nginx/sites-enabled/default.conf` (SITENAME и UNAME поменять)
+
+```
+server {
+  listen 80;
+  listen [::]:80 default_server;
+  server_name  _ SITENAME *.SITENAME;
+  root         /home/UNAME/www;
+  error_log    /home/UNAME/logs/sitename.log;
+  index        index.php;
+  charset      utf-8;
+
+  location ~ ^/(application\/|log\/|exe\/|protectedfolder\/) {
+    deny  all;
+  }
+
+  location ~ /\. {
+    deny all;
+    access_log off;
+    log_not_found off;
+  }
+
+  location / {
+    index index.php index.html index.htm;
+    try_files $uri $uri/ /index.php?$args;
+  }
+
+  location ~ \.(js|css|png|jpg|gif|ico|eot|svg|ttff|woff|map|wav)$ {
+    expires 1M;
+    add_header Cache-Control "public";
+    try_files $uri =404;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass   unix:/var/run/php5-fpm.sock;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+  }
+}
+```
+
 
 Установка завершается в браузере [http://localhost/install.php](http://localhost/install.php).<br>
 Потребуется ввести данные для связи с mysql и свой логин/пароль.

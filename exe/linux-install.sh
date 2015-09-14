@@ -5,12 +5,12 @@ if [[ "$2" != "" ]]; then SITENAME="$2"; else SITENAME="sitename.com"; fi;
 
 # ---------------------------------------------------------------------------- #
 
-echo -e "\e[97mУстановка jpegoptim exiftool imagemagick"
-apt-get install git jpegoptim exiftool imagemagick
+echo -e "\e[32mУстановка jpegoptim exiftool imagemagick php5-gd curl\e[39m"
+apt-get install git jpegoptim exiftool imagemagick php5-gd curl
 
 # ---------------------------------------------------------------------------- #
 
-echo -e "\e[97mСоздание пользователя и таблицы в базе данных:"
+echo -e "\e[32mСоздание пользователя и таблицы в базе данных:\e[39m"
 
 echo -e "\e[31mВведите имя базы данных (по умолчанию mazepadb):\e[39m"
 read STR
@@ -48,31 +48,30 @@ mysql --user="root" --password="${RPWD}" < /tmp/insert.sql
 
 # ---------------------------------------------------------------------------- #
 
-echo -e "\e[97mСоздание нового пользователя $UNAME"
+echo -e "\e[32mСоздание нового пользователя $UNAME\e[39m"
 useradd $UNAME -m -G www-data
 
-echo -e "\e[97mКопирование файлов"
+echo -e "\e[32mКопирование файлов\e[39m"
 rm -rf /home/$UNAME/www
-cd /home/$UNAME/ && mkdir logs www
-git clone https://github.com/latur/Mazepa.git www
+mkdir /home/$UNAME /home/$UNAME/www /home/$UNAME/logs
+git clone https://github.com/latur/Mazepa.git /home/$UNAME/www
 
 cat /home/$UNAME/www/install.php \
-  | sed "s/name=\"dbname\" value=\"\"/name=\"dbname\" value=\"\"/g" -r \
-  | sed "s/name=\"dbuname\" value=\"\"/name=\"dbuname\" value=\"\"/g" -r \
-  | sed "s/name=\"dbpass\" value=\"\"/name=\"dbpass\" value=\"\"/g" -r
-    > /home/$UNAME/www/install.php
+  | sed "s/name=\"dbname\" value=\"\"/name=\"dbname\" value=\"$DBNAME\"/g" -r \
+  | sed "s/name=\"dbuname\" value=\"\"/name=\"dbuname\" value=\"$USR\"/g" -r \
+  | sed "s/name=\"dbpass\" value=\"\"/name=\"dbpass\" value=\"$UPWD\"/g" -r \
+    > /tmp/install.php
 
-echo -e "\e[97mПрава доступа"
+cp /tmp/install.php /home/$UNAME/www/install.php
+
+echo -e "\e[32mПрава доступа\e[39m"
 find /home/$UNAME/www/ -type d -exec chmod 770 {} +
 find /home/$UNAME/www/ -type f -exec chmod 660 {} +
 chown -R $UNAME:www-data /home/$UNAME/www/
 
 # ---------------------------------------------------------------------------- #
 
-echo -e "\e[97mНастройка Nginx"
-
-echo -e "> /etc/nginx/nginx.conf"
-curl -s https://gist.githubusercontent.com/latur/8e56eb5cced3bf61bd8e/raw/ce0cde4dc392509d360291eb370af738fe973b8f/nginx.conf > /etc/nginx/nginx.conf
+echo -e "\e[32mНастройка nginx, php5-fpm\e[39m"
 
 echo -e "> /etc/nginx/sites-enabled/default.conf"
 curl -s https://gist.githubusercontent.com/latur/446c68616d480a56bb25/raw/30c8822120f44347915714bbbc4df863a885c783/sitename.conf \
@@ -80,16 +79,17 @@ curl -s https://gist.githubusercontent.com/latur/446c68616d480a56bb25/raw/30c882
   | sed "s/SITENAME/$SITENAME/g" -r \
     > /etc/nginx/sites-enabled/default.conf
 
-cat /etc/php5/fpm/php.ini \
-  | sed "s/; display_errors/display_errors = Off/g" -r \
-  | sed "s/short_open_tag = Off/short_open_tag = On/g" -r \
-  | sed "s/upload_max_filesize = 2M/upload_max_filesize = 450M/g" -r \
-  | sed "s/max_file_uploads = 20/max_file_uploads = 250/g" -r \
-  | sed "s/memory_limit = 128M/memory_limit = 512M/g" -r \
-    > /etc/php5/fpm/php.ini
+echo -e "> /etc/nginx/nginx.conf"
+curl -s https://gist.githubusercontent.com/latur/8e56eb5cced3bf61bd8e/raw/ce0cde4dc392509d360291eb370af738fe973b8f/nginx.conf \
+ > /etc/nginx/nginx.conf
 
-echo -e "Запуск Nginx"
+echo -e "> /etc/php5/fpm/php.ini"
+curl -s https://gist.githubusercontent.com/latur/c876031bc80b4219444b/raw/9cf242b98f4cfe51d86c1c4aa9db4a714e91d25f/php.ini \
+ > /etc/php5/fpm/php.ini
+
+echo -e "\e[32mЗапуск Nginx\e[39m"
+apachectl stop
 service nginx restart
 service php5-fpm restart
 
-sensible-browser "http://localhost/install"
+sensible-browser "http://localhost/install.php"
