@@ -472,20 +472,22 @@ class Library extends Init {
 	 * Редактирование персональной страницы
 	 */
 	public function __ProfileInfo(){
-		// [Имя, Урл, Приватность, Описание]
-		$data = array_slice(@$_POST['data'], 1, 3);
+		// [Имя, Урл, Описание]
+		$data = array_slice(@$_POST['data'], 0, 3);
 		// Имя
 		$data[0] = htmlspecialchars(trim(@$data[0]));
 		// Урл
 		// Корректен?
-		$data[1] = $this->IsName(@$data[1]);
-		if ($data[1] === false) return ['error' => 'Логин некорректен'];
+		// $data[1] = $this->IsName(@$data[1]);
+		// if ($data[1] === false) return ['error' => 'Логин некорректен'];
 		// Уникален?
-		$login = $this->db->query("select `id` from `mazepa_userinfo` where `username` = '{$data[1]}' limit 1");
-		$uid = $login->fetch(PDO::FETCH_ASSOC);
-		if ($uid && @$uid['id'] != $this->user['id']) return ['error' => 'Этот URL уже используется'];
+		//$login = $this->db->query("select `id` from `mazepa_userinfo` where `username` = '{$data[1]}' limit 1");
+		//$uid = $login->fetch(PDO::FETCH_ASSOC);
+		//if ($uid && @$uid['id'] != $this->user['id']) return ['error' => 'Этот URL уже используется'];
 		// Подпись
+		$data[1] = '';
 		$data[2] = htmlspecialchars(@$data[2]);
+		print_r($data);
 		// Сохранение информации
 		$e = $this->db->prepare("update `mazepa_userinfo` 
 			set `name` = ?, `username` = ?, `text` = ? 
@@ -660,7 +662,7 @@ class Library extends Init {
 		$list = is_array($aid) ? implode(',', $aid) : $aid;
 		if ($list == "") return [];
 		$covers = $this->db->query("select * from (select `mazepa_media`.`src_small`, `mazepa_media`.`src_main`, `mazepa_media`.`color`, `mazepa_media`.`album` 
-			from `mazepa_media`,`mazepa_alb_gal` where `mazepa_media`.`album` in ($list) 
+			from `mazepa_media` where `mazepa_media`.`album` in ($list) 
 			order by `mazepa_media`.`order`) as `tmp` group by `tmp`.`album`");
 		return $covers->fetchAll(PDO::FETCH_ASSOC);
 	}
