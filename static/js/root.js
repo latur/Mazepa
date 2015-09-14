@@ -914,7 +914,8 @@ var Media = (function(){
 					},
 				    stop : function(e){
 				        var src = hard + info.result + 'cover_medium.jpg';
-						$('.pfl .c img').attr('src', src + '?' + Math.random());
+						$('.pfl .c img').remove();
+						$('.pfl .c').append('<img width="100%" src="'+ src + '?' + Math.random() +'" />');
 						$('.pfl .status i').css({ width: 0 });
 					}
 				});
